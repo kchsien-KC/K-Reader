@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════════
+   K.閱讀 v1.2 — AI 閱讀助手對話框
+  ═══════════════════════════════════════════════════════════════
+   整合方式：閱讀頁長按選取 → AiAssistantHelper.showDialog(activity,
+   selectedText) ——輸入預填選中文字、三動作按鈕、ai_running 狀態
+   列（預設 gone）、結果區＋一鍵複製。
+
+   節點職責：
+    · et_ai_input       選中文字輸入區（可編輯——截長補短後再問）
+    · btn_ai_summary    段落摘要（實心主色鈕）
+    · btn_ai_classical  文言文白話翻譯（外框風格鈕）
+    · btn_ai_explain    深度解讀（外框風格鈕）
+    · row_ai_status     AI 思考中狀態列（ProgressBar＋文案，gone）
+    · tv_ai_output      結果區（捲動承載長回覆）
+    · btn_ai_copy       一鍵複製結果（copied 回饋）
+
+   設計紀律：
+    · 純主題屬性著色（colorPrimary／colorOnPrimary／textColorSecondary），
+      日夜間自動適配
+    · 零點陣圖、零額外 drawable 檔案（< 15MB 體積紀律）
+    · RTL 友善（marginStart/End＋paddingStart/End）
+    · 與 view_clipboard_bar.xml 同款按鈕視覺語言（懸浮家族）
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- 輸入區：預填選中文字，可編輯 -->
+    <EditText
+        android:id="@+id/et_ai_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="3"
+        android:maxLines="6"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:textSize="14sp" />
+
+    <!-- 三動作列：摘要（實心）／文言翻譯／深度解讀（外框） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/btn_ai_summary"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="?attr/colorPrimary"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/ai_summary"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btn_ai_classical"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/ai_translate_classical"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="13sp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btn_ai_explain"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/ai_explain"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="13sp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- 狀態列：AI 思考中（預設 gone——零干擾） -->
+    <LinearLayout
+        android:id="@+id/row_ai_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress_ai"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_ai_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:text="@string/ai_running"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- 結果區：捲動承載長回覆 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="10dp"
+        android:fillViewport="true">
+
+        <TextView
+            android:id="@+id/tv_ai_output"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="3"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:lineSpacingMultiplier="1.3" />
+    </ScrollView>
+
+    <!-- 一鍵複製（右對齊外框鈕） -->
+    <TextView
+        android:id="@+id/btn_ai_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:background="?attr/selectableItemBackground"
+        android:text="@string/copy"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="13sp"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>

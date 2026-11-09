@@ -51,7 +51,21 @@
 
 壓縮包：`K_Reader_Stage4_files.zip`（6 檔，路徑即 Legado 3.0 樹落點）。
 
+## Stage 5 — 淨化規則包＋回收站＋金句卡＋閱讀統計＋E-Ink＋WebDAV＋AI 助手（已完成）
+
+| 檔案 | 行數 | 說明 |
+| --- | --- | --- |
+| `app/src/main/java/com/k/reader/help/content/CleanRuleManager.kt` | 306 | 淨化規則包：三種綁定範圍（全域／依書名／依書源）；內建台灣常見廣告淨化規則包（11 條正則、簡繁並寫、冪等安裝）；正則預編譯快取（ConcurrentHashMap，命中零編譯）；單規則 512 上限＋壞規則自動跳過；刪除規則先進回收站；匯入匯出 JSON |
+| `app/src/main/java/com/k/reader/help/storage/RecycleBinManager.kt` | 221 | 回收站：書籍／書源／訂閱源／淨化規則四形態存還（Gson payload）；30 天逾期自潔＋200 條容量上限；還原走 insertOrUpdate 冪等寫回；一鍵清空 |
+| `app/src/main/java/com/k/reader/help/quote/GoldenQuoteManager.kt` | 373 | 文青金句卡片：1080×1620「青黛宣紙」風格純程序化繪製（StaticLayout 自動換行＋字級 54→34 收縮）；金句簿 CRUD（filesDir JSON）；MediaStore 落 Pictures/KReader/；FileProvider（com.k.reader.filen）系統分享 |
+| `app/src/main/java/com/k/reader/help/statistics/ReadStatisticsManager.kt` | 273 | 閱讀統計：日為單位累計時長／字數（單次 60 分鐘掛機截斷）；今日／本週／本月／累計四期匯總＋完本集；14 天長條圖資料（零填空）；stats_hour_fmt／minute_fmt／words_fmt 格式化；365 天自潔 |
+| `app/src/main/java/com/k/reader/help/config/EInkHelper.kt` | 119 | 墨水屏模式：高對比純黑白（白底黑字）；視窗動畫歸零（setWindowAnimations(0)）；翻頁建議「無動畫」；電子紙裝置偵測（型號關鍵字）＋首次啟動自動開啟；旗標跨啟動還原 |
+| `app/src/main/java/com/k/reader/help/webdav/WebDavHelper.kt` | 601 | WebDAV 雲端備份：Basic 驗證＋PROPFIND/MKCOL/PUT/GET/DELETE 五動詞（XML 容錯正則解析）；三件套護航（限流＋動態 UA＋SSL 寬容——NAS 自簽日常）；備份 zip（書源＋訂閱源＋書籍含進度）落 /KReader/backup/；自動增量：WorkManager 每 12 小時＋保留 10 份逾限自舊刪；本地備份 Download/KReader/ |
+| `app/src/main/java/com/k/reader/help/ai/AiAssistantHelper.kt` | 342 | AI 閱讀助手：OpenAI 相容端點（網址＋金鑰＋模型自填、端點自動正規化）；三動作（段落摘要／文言文白話翻譯／深度解讀——系統提示詞繁中寫死屬功能資料）；60 秒逾時＋1024 token 上限；三件套護航；結果一鍵複製 |
+| `app/src/main/res/layout/dialog_ai_assistant.xml` | 162 | AI 助手對話框：輸入預填選中文字＋三動作按鈕（摘要實心主色、翻譯／解讀外框）＋ai_running 狀態列（預設 gone）＋捲動結果區＋一鍵複製；純主題屬性、RTL 友善 |
+
+壓縮包：`K_Reader_Stage5_files.zip`（8 檔，路徑即 Legado 3.0 樹落點）。
+
 ## 待續階段
 
-- Stage 5：淨化規則包、回收站、金句卡、閱讀統計、E-Ink、WebDAV、AI 助手
 - Stage 6：README、GitHub Actions（Tag 觸發雲端編譯 `K_Reader_v1.2.apk`）、init_k_reader.sh
