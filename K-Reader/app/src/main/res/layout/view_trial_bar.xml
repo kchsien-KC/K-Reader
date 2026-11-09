@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════════
+   K.閱讀 v1.2 — 隨機試讀懸浮條（閱讀介面底部）
+  ═══════════════════════════════════════════════════════════════
+   整合方式：於 activity_book_read.xml 的根容器（FrameLayout 系）
+   內 include 本布局，並由 RandomTrialManager.bindTrialBar()
+   依試讀標記動態顯示／隱藏（預設 gone，非試讀書零干擾）。
+
+   設計紀律：
+    · 純主題屬性著色（colorSurface / colorPrimary），日夜間自動適配
+    · 零點陣圖、零額外 drawable 檔案（< 15MB 體積紀律）
+    · RTL友善（paddingStart/End + marginStart/End）
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trial_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="?attr/colorSurface"
+    android:elevation="8dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:visibility="gone">
+
+    <!-- 左：模式標籤 -->
+    <TextView
+        android:id="@+id/tv_trial_hint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/random_trial"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="13sp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <!-- 中：換一本試讀（外框風格，無框線漣漪） -->
+    <TextView
+        android:id="@+id/tv_change_book"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:background="?attr/selectableItemBackground"
+        android:text="@string/random_trial_change"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- 右：一鍵加入書架（實心主色鈕） -->
+    <TextView
+        android:id="@+id/tv_add_shelf"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="?attr/colorPrimary"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="@string/random_trial_add_bookshelf"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>
