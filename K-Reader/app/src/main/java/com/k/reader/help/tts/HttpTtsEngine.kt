@@ -567,7 +567,7 @@ object HttpTtsEngine {
 
     private fun cacheDir(): File = File(AppContext.ctx.cacheDir, CACHE_DIR_NAME)
 
-    /** 快取鍵：SHA-256( 引擎 id + NUL + 文字 ) 前 24 碼 */
+    /** 快取鍵：SHA-256( 引擎 id + 空白 + 文字 ) 前 24 碼 */
     private fun cacheFileOf(engineId: String, text: String): File {
         val digest = MessageDigest.getInstance("SHA-256")
             .digest((engineId + " " + text).toByteArray(Charsets.UTF_8))
