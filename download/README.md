@@ -27,9 +27,19 @@
 
 壓縮包：`K_Reader_Stage2_files.zip`（6 檔，路徑即 Legado 3.0 樹落點）。
 
+## Stage 3 — 書源／訂閱源完整鏈路檢核與智慧分組（已完成）
+
+| 檔案 | 行數 | 說明 |
+| --- | --- | --- | --- |
+| `app/src/main/java/com/k/reader/help/source/BookSourceHealthManager.kt` | 515 | 書源三步全鏈路併發檢核（搜尋→目錄→首章正文 150 字門檻）；Semaphore×6 併發×單源限流；疑似封鎖換身分重試、SSL 類重試；respondTime 寫回；失敗自動歸入「失效」分組 |
+| `app/src/main/java/com/k/reader/help/source/RssSourceVerifyManager.kt` | 390 | 訂閱源檢核：GET＋瀏覽器級完整標頭＋動態 Referer（站點根推導）；Feed 嗅探 RSS／Atom／JSON／HTML 四型；SSL 寬容通道重試 |
+| `app/src/main/java/com/k/reader/help/source/SourceGroupManager.kt` | 402 | 智慧分組：型態＋名稱關鍵字分類（小說／有聲／漫畫／資訊／圖庫／影音／其他）、依網域聚攏鏡像源、失效分組同步與一鍵清空；冪等置換、自訂群組恆保留、標籤零硬編碼 |
+| `app/src/main/res/layout/dialog_source_verify.xml` | 63 | 一鍵併發檢核進度對話框（水平進度條＋狀態列＋當前源/步驟明細） |
+
+壓縮包：`K_Reader_Stage3_files.zip`（4 檔，路徑即 Legado 3.0 樹落點）。
+
 ## 待續階段
 
-- Stage 3：書源／訂閱源完整鏈路檢核與智慧分組（直接消費 Stage 2 三件套）
 - Stage 4：WebView 過盾、剪貼簿偵測、HTTP 聽書、智慧換源
 - Stage 5：淨化規則包、回收站、金句卡、閱讀統計、E-Ink、WebDAV、AI 助手
 - Stage 6：README、GitHub Actions（Tag 觸發雲端編譯 `K_Reader_v1.2.apk`）、init_k_reader.sh
