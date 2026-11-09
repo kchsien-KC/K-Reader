@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  K.閱讀 v1.2 啟動圖示 — 前景層（提案 A：羅馬大 K 文青科技）
+  ─────────────────────────────────────────────────────────────────
+  設計語彙（純向量，零點陣圖）：
+   · 左側垂直書脊＝大寫 K 的豎筆，帶古典羅馬碑銘上下微襯線（Serif）
+   · 右側雙斜筆化為微弧翻開的雙層書頁：
+       前頁 宣紙白 #F7F8F4 ／後頁 宣紙灰綠 #E2E6DC（尖端微露、扇形展開）
+   · 右下角懸浮琥珀金幾何圓點 #D4AF37，呼應「K.」的數位科技感
+  幾何規格：108×108dp 畫布；整體字形內縮於半徑 33dp 之核心安全圈
+ （66dp 安心圈），任何啟動器遮罩（圓形／圓角方／超橢圓）皆零裁切。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- ═══ 後層書頁（宣紙灰綠 #E2E6DC，尖端扇出） ═══ -->
+
+    <!-- 上斜筆後頁（微弧） -->
+    <path
+        android:fillColor="#E2E6DC"
+        android:pathData="M40.5,41.5 Q59,35 77,33.5 Q58,43.5 40.5,52.5 Z" />
+
+    <!-- 下斜筆後頁（微弧；上緣微外凸使頁身厚度與上斜筆對稱） -->
+    <path
+        android:fillColor="#E2E6DC"
+        android:pathData="M40.5,48.5 Q58.5,57.5 76.5,71.5 Q57,64.5 40.5,59.5 Z" />
+
+    <!-- ═══ 前層書頁（宣紙白 #F7F8F4） ═══ -->
+
+    <!-- 上斜筆前頁 -->
+    <path
+        android:fillColor="#F7F8F4"
+        android:pathData="M40.5,42.35 Q56.2,36.8 71.5,35.5 Q55.4,44 40.5,51.65 Z" />
+
+    <!-- 下斜筆前頁 -->
+    <path
+        android:fillColor="#F7F8F4"
+        android:pathData="M40.5,49.33 Q55.8,56.98 71.1,68.88 Q54.53,62.93 40.5,58.68 Z" />
+
+    <!-- ═══ 垂直書脊（羅馬碑銘襯線豎筆，繪於最上層以無縫收合書頁根部） ═══ -->
+    <path
+        android:fillColor="#F7F8F4"
+        android:pathData="M32,31 H44 V35 H41.5 V73.5 H44 V77.5 H32 V73.5 H34.5 V35 H32 Z" />
+
+    <!-- ═══ 琥珀金科技光點（「K.」右下懸浮圓點） ═══ -->
+    <path
+        android:fillColor="#D4AF37"
+        android:pathData="M64.5,76.5 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 Z" />
+</vector>

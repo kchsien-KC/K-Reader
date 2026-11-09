@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  K.閱讀 v1.2 旗艦純淨版 — 繁體中文（台灣）字串資源
+  · 全專案統一顯示名稱：「K.閱讀」（大寫羅馬字 K + 圓點，嚴禁小寫或其他變體）
+  · 台灣慣用語：搜尋/網路/伺服器/設定/匯入/匯出/剪貼簿/偵測…
+  · Stage 2~5 各模組將直接引用本檔之 string name（前瞻鎖定命名）
+-->
+<resources>
+
+    <!-- ═══════════ 應用識別 ═══════════ -->
+    <string name="app_name">K.閱讀</string>
+    <string name="app_name_with_version">K.閱讀 %1$s</string>
+    <string name="app_edition">旗艦純淨版</string>
+    <string name="app_slogan">純淨・輕快・沉浸的繁體閱讀</string>
+
+    <!-- ═══════════ 通用動作 ═══════════ -->
+    <string name="confirm">確定</string>
+    <string name="cancel">取消</string>
+    <string name="save">儲存</string>
+    <string name="delete">刪除</string>
+    <string name="delete_confirm">確認刪除？</string>
+    <string name="share">分享</string>
+    <string name="copy">複製</string>
+    <string name="paste">貼上</string>
+    <string name="select_all">全選</string>
+    <string name="search">搜尋</string>
+    <string name="refresh">重新整理</string>
+    <string name="back">返回</string>
+    <string name="more">更多</string>
+    <string name="done">完成</string>
+    <string name="loading">載入中…</string>
+    <string name="empty">空空如也</string>
+    <string name="retry">重試</string>
+    <string name="submit">送出</string>
+    <string name="edit">編輯</string>
+    <string name="undo">復原</string>
+    <string name="enabled">已啟用</string>
+    <string name="disabled">已停用</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="close">關閉</string>
+    <string name="next_step">下一步</string>
+    <string name="prev_step">上一步</string>
+    <string name="get_it">知道了</string>
+    <string name="success">操作成功</string>
+    <string name="error">發生錯誤</string>
+    <string name="network_error">網路連線異常，請稍後重試</string>
+    <string name="copied">已複製到剪貼簿</string>
+    <string name="log">日誌</string>
+    <string name="show_log">顯示日誌</string>
+
+    <!-- ═══════════ 主分頁 / 書架 ═══════════ -->
+    <string name="tab_bookshelf">書架</string>
+    <string name="tab_discover">發現</string>
+    <string name="tab_rss">訂閱</string>
+    <string name="tab_me">我的</string>
+    <string name="search_book_hint">書名 / 作者 / 書源</string>
+    <string name="search_result">搜尋結果</string>
+    <string name="search_source_count">共 %1$d 個書源</string>
+    <string name="add_to_bookshelf">加入書架</string>
+    <string name="remove_from_bookshelf">移出書架</string>
+    <string name="book_detail">書籍詳情</string>
+    <string name="book_source">書源</string>
+    <string name="rss_source">訂閱源</string>
+    <string name="last_chapter">最新章節</string>
+    <string name="continue_read">繼續閱讀</string>
+    <string name="book_finished">已完結</string>
+    <string name="book_unfinished">連載中</string>
+
+    <!-- ═══════════ 隨機試讀（K.閱讀專屬） ═══════════ -->
+    <string name="random_trial">隨機試讀</string>
+    <string name="random_trial_change">換一本試讀</string>
+    <string name="random_trial_add_bookshelf">一鍵加入書架</string>
+    <string name="random_trial_loading">正在為您隨機選書…</string>
+    <string name="random_trial_retrying">本書正文不足，自動換書中（第 %1$d 次）…</string>
+    <string name="random_trial_failed">試讀失敗：目前沒有可用的有效書源</string>
+    <string name="random_trial_cleared">已自動清除試讀暫存</string>
+    <string name="random_trial_added">已加入書架</string>
+
+    <!-- ═══════════ 繁體中文與即時簡轉繁 ═══════════ -->
+    <string name="s2t_switch">簡體轉繁體（台灣用語）</string>
+    <string name="s2t_on">已開啟即時簡轉繁</string>
+    <string name="s2t_off">已關閉簡轉繁</string>
+    <string name="s2t_phrase_mode">台灣常用詞彙轉換（s2twp）</string>
+    <string name="s2t_quote_optimize">繁體引號排版（「」與『』）</string>
+    <string name="s2t_converting">轉換中…</string>
+
+    <!-- ═══════════ 書源 / 訂閱源管理（雙向完整） ═══════════ -->
+    <string name="source_manage_book">書源管理</string>
+    <string name="source_manage_rss">訂閱源管理</string>
+    <string name="import_source">匯入</string>
+    <string name="import_from_file">從檔案匯入</string>
+    <string name="import_from_url">從網址匯入</string>
+    <string name="import_from_clipboard">從剪貼簿匯入</string>
+    <string name="import_from_qr">掃描二維條碼匯入</string>
+    <string name="import_result">匯入成功：新增 %1$d、更新 %2$d</string>
+    <string name="export_source">匯出</string>
+    <string name="export_select">匯出所選</string>
+    <string name="export_json">匯出 JSON 備份</string>
+    <string name="source_enable">啟用</string>
+    <string name="source_disable">停用</string>
+    <string name="source_edit">編輯來源</string>
+    <string name="source_share">分享來源</string>
+    <string name="source_group">分組</string>
+    <string name="source_sort_manual">手動排序</string>
+    <string name="source_count">來源數量：%1$d</string>
+    <string name="select_source_count">已選 %1$d 項</string>
+    <string name="batch_select">批次選擇</string>
+    <string name="batch_delete">批次刪除</string>
+    <string name="batch_delete_confirm">確認刪除選取的 %1$d 個來源？</string>
+    <string name="group_auto">智慧自動分組</string>
+    <string name="group_by_domain">依網域分組</string>
+    <string name="group_by_type">依內容類型分組</string>
+    <string name="group_failed">失效</string>
+    <string name="group_clear_failed">一鍵清空失效分組</string>
+    <string name="group_clear_failed_confirm">將刪除「失效」分組內所有來源，確認？</string>
+    <string name="group_novel">小說</string>
+    <string name="group_audio">有聲</string>
+    <string name="group_comic">漫畫</string>
+    <string name="group_info">資訊</string>
+    <string name="group_gallery">圖庫</string>
+    <string name="group_video">影音</string>
+    <string name="group_other">其他</string>
+
+    <!-- ═══════════ 真實鏈路檢核（防誤判） ═══════════ -->
+    <string name="verify_all">一鍵併發檢核</string>
+    <string name="verify_running">併發檢核中…</string>
+    <string name="verify_step_search">關鍵字搜尋</string>
+    <string name="verify_step_toc">取得目錄</string>
+    <string name="verify_step_content">抓取首章正文</string>
+    <string name="verify_search_ok">搜尋通過</string>
+    <string name="verify_search_fail">搜尋失敗</string>
+    <string name="verify_toc_ok">目錄通過</string>
+    <string name="verify_toc_fail">目錄失敗</string>
+    <string name="verify_content_ok">正文通過（%1$d 字）</string>
+    <string name="verify_content_short">正文字數不足（%1$d / 150）</string>
+    <string name="verify_result">檢核完成：有效 %1$d、失效 %2$d</string>
+    <string name="verify_no_valid_source">沒有通過檢核的來源</string>
+    <string name="rss_verify_ok">訂閱源檢核通過</string>
+    <string name="rss_verify_fail">訂閱源擷取失敗</string>
+
+    <!-- ═══════════ 防封鎖 / 過盾 / 剪貼簿偵測 ═══════════ -->
+    <string name="anti_block_title">網路防封鎖</string>
+    <string name="ua_pool_title">動態 User-Agent 池</string>
+    <string name="rate_limit_title">單源請求限流（QPS）</string>
+    <string name="ssl_tolerance">老舊站點 SSL 相容放行</string>
+    <string name="shield_cloudflare">此站啟用 Cloudflare 防護</string>
+    <string name="shield_getting_cookie">正在透過系統瀏覽器取得 Cookie…</string>
+    <string name="shield_success">已取得並寫回 Cookie，請重試</string>
+    <string name="shield_failed">驗證未完成</string>
+    <string name="clipboard_detected">偵測到剪貼簿中有書源設定</string>
+    <string name="clipboard_import_now">一鍵匯入</string>
+    <string name="clipboard_ignore">忽略</string>
+
+    <!-- ═══════════ 淨化規則與回收站 ═══════════ -->
+    <string name="purify_title">淨化規則包</string>
+    <string name="purify_tw_pack">台灣常見廣告淨化規則包</string>
+    <string name="purify_scope_book">依書名綁定</string>
+    <string name="purify_scope_source">依書源綁定</string>
+    <string name="purify_recycle">回收站</string>
+    <string name="purify_recycle_restore">還原</string>
+    <string name="purify_recycle_empty">回收站已清空</string>
+    <string name="purify_regex_precompiled">正則預編譯快取已啟用</string>
+
+    <!-- ═══════════ 智慧換源 ═══════════ -->
+    <string name="switch_source">換源</string>
+    <string name="switch_auto">自動換源</string>
+    <string name="switch_searching">正在搜尋同名書籍…</string>
+    <string name="switch_similarity">相似度 %1$d%%</string>
+    <string name="switch_chapter_match">章節比對 %1$d/%2$d</string>
+    <string name="switch_none">找不到可用的替代書源</string>
+    <string name="switch_done">已切換至「%1$s」</string>
+
+    <!-- ═══════════ HTTP 線上聽書引擎 ═══════════ -->
+    <string name="read_aloud">朗讀</string>
+    <string name="read_aloud_stop">停止朗讀</string>
+    <string name="read_aloud_pause">暫停朗讀</string>
+    <string name="read_aloud_resume">繼續朗讀</string>
+    <string name="tts_http_engine">HTTP 線上語音引擎</string>
+    <string name="tts_edge">微軟 Edge 線上真人語音</string>
+    <string name="tts_azure">Azure 語音服務</string>
+    <string name="tts_voice">音色</string>
+    <string name="tts_rate">語速</string>
+    <string name="tts_pitch">音調</string>
+    <string name="tts_test">試聽</string>
+    <string name="tts_no_engine">尚未設定線上語音引擎</string>
+    <string name="tts_auto_next">朗讀完自動下一章</string>
+
+    <!-- ═══════════ 閱讀統計 ═══════════ -->
+    <string name="stats_title">閱讀統計</string>
+    <string name="stats_today">今日</string>
+    <string name="stats_week">本週</string>
+    <string name="stats_month">本月</string>
+    <string name="stats_total">累計</string>
+    <string name="stats_duration">閱讀時長</string>
+    <string name="stats_words">閱讀字數</string>
+    <string name="stats_finish">完本數</string>
+    <string name="stats_hour_fmt">%1$d 小時 %2$d 分</string>
+    <string name="stats_minute_fmt">%1$d 分</string>
+    <string name="stats_words_fmt">%1$s 萬字</string>
+    <string name="stats_chart_daily">每日閱讀時長（長條圖）</string>
+
+    <!-- ═══════════ 文青金句卡片 ═══════════ -->
+    <string name="highlight">劃線批註</string>
+    <string name="annotation">批註</string>
+    <string name="quote_card">文青金句卡片</string>
+    <string name="quote_card_generate">生成金句卡片</string>
+    <string name="quote_card_share">分享金句卡片</string>
+    <string name="quote_card_saved">已儲存至 KReader/ 目錄</string>
+    <string name="quote_card_select_hint">長按選取段落即可劃線批註</string>
+
+    <!-- ═══════════ 備份與 WebDAV ═══════════ -->
+    <string name="backup_title">備份與還原</string>
+    <string name="backup_local">本地備份（KReader/）</string>
+    <string name="backup_now">立即備份</string>
+    <string name="backup_restore">還原備份</string>
+    <string name="webdav_config">WebDAV 設定</string>
+    <string name="webdav_url">伺服器網址</string>
+    <string name="webdav_account">帳號</string>
+    <string name="webdav_password">密碼</string>
+    <string name="webdav_auto_increment">自動增量備份</string>
+    <string name="webdav_backup_now">雲端備份</string>
+    <string name="webdav_restore_now">雲端還原</string>
+    <string name="webdav_sync_progress">同步中…%1$s</string>
+    <string name="webdav_test_ok">WebDAV 連線成功</string>
+    <string name="webdav_test_fail">WebDAV 連線失敗</string>
+    <string name="backup_multi_device">多端閱讀進度無痛還原</string>
+
+    <!-- ═══════════ 墨水屏專屬模式 ═══════════ -->
+    <string name="eink_mode">墨水屏模式</string>
+    <string name="eink_on">已切換墨水屏模式（高對比純黑白）</string>
+    <string name="eink_off">已關閉墨水屏模式</string>
+    <string name="eink_no_animation">翻頁動畫已全數關閉</string>
+
+    <!-- ═══════════ AI 閱讀助手 ═══════════ -->
+    <string name="ai_assistant">AI 閱讀助手</string>
+    <string name="ai_summary">段落摘要</string>
+    <string name="ai_translate_classical">文言文白話翻譯</string>
+    <string name="ai_explain">深度解讀</string>
+    <string name="ai_api_config">自訂 API（OpenAI 相容）</string>
+    <string name="ai_api_url">API 網址</string>
+    <string name="ai_api_key">API 金鑰</string>
+    <string name="ai_api_model">模型名稱</string>
+    <string name="ai_running">AI 思考中…</string>
+    <string name="ai_error">AI 呼叫失敗，請檢查 API 設定</string>
+
+    <!-- ═══════════ 閱讀器介面 ═══════════ -->
+    <string name="toc">目錄</string>
+    <string name="read_adjust">閱讀調節</string>
+    <string name="font_size">字號</string>
+    <string name="font_family">字體</string>
+    <string name="line_spacing">行距</string>
+    <string name="letter_spacing">字距</string>
+    <string name="page_margin">邊距</string>
+    <string name="page_mode">翻頁方式</string>
+    <string name="page_mode_simulation">模擬翻頁</string>
+    <string name="page_mode_cover">覆蓋</string>
+    <string name="page_mode_slide">滑動</string>
+    <string name="page_mode_scroll">卷軸</string>
+    <string name="page_mode_none">無動畫</string>
+    <string name="brightness">亮度</string>
+    <string name="brightness_auto">跟隨系統</string>
+    <string name="day_mode">日間模式</string>
+    <string name="night_mode">夜間模式</string>
+    <string name="eye_protection">護眼</string>
+    <string name="full_screen">全螢幕</string>
+    <string name="read_background">閱讀背景</string>
+    <string name="keep_light">螢幕常亮</string>
+    <string name="click_flip">點擊翻頁</string>
+    <string name="volume_flip">音量鍵翻頁</string>
+    <string name="prev_chapter">上一章</string>
+    <string name="next_chapter">下一章</string>
+    <string name="chapter_loading">章節載入中…</string>
+    <string name="chapter_empty">本章暫無內容</string>
+
+    <!-- ═══════════ 關於 ═══════════ -->
+    <string name="about">關於</string>
+    <string name="check_update">檢查更新</string>
+    <string name="check_update_fail">檢查更新失敗</string>
+    <string name="open_source_license">開源授權</string>
+    <string name="privacy_policy">隱私權政策</string>
+    <string name="donate">贊助</string>
+    <string name="feedback">意見回饋</string>
+    <string name="setting">設定</string>
+    <string name="exit_app">再按一次返回鍵退出</string>
+</resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  K.閱讀 — API 23~25 舊裝置 fallback 啟動圖示（純向量、零點陣圖）
+  背景＋前景平面合成版；於 mipmap 預設桶供 26 以下版本解析
+ （26 以上由 mipmap-anydpi-v26 之 adaptive-icon 覆蓋）。
+  框線描邊放寬至 2.5dp 以確保小尺寸點陣化後仍可辨識。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 全幅青黛宣紙底色 -->
+    <path
+        android:fillColor="#245950"
+        android:pathData="M0,0 H108 V108 H0 Z" />
+
+    <!-- 精細內縮框線 -->
+    <path
+        android:strokeColor="#34756A"
+        android:strokeWidth="2.5"
+        android:pathData="M42,24 H66 A18,18 0 0 1 84,42 V66 A18,18 0 0 1 66,84 H42 A18,18 0 0 1 24,66 V42 A18,18 0 0 1 42,24 Z" />
+
+    <!-- 後層書頁 -->
+    <path
+        android:fillColor="#E2E6DC"
+        android:pathData="M40.5,41.5 Q59,35 77,33.5 Q58,43.5 40.5,52.5 Z" />
+    <path
+        android:fillColor="#E2E6DC"
+        android:pathData="M40.5,48.5 Q58.5,57.5 76.5,71.5 Q57,64.5 40.5,59.5 Z" />
+
+    <!-- 前層書頁 -->
+    <path
+        android:fillColor="#F7F8F4"
+        android:pathData="M40.5,42.35 Q56.2,36.8 71.5,35.5 Q55.4,44 40.5,51.65 Z" />
+    <path
+        android:fillColor="#F7F8F4"
+        android:pathData="M40.5,49.33 Q55.8,56.98 71.1,68.88 Q54.53,62.93 40.5,58.68 Z" />
+
+    <!-- 垂直書脊（羅馬碑銘襯線豎筆） -->
+    <path
+        android:fillColor="#F7F8F4"
+        android:pathData="M32,31 H44 V35 H41.5 V73.5 H44 V77.5 H32 V73.5 H34.5 V35 H32 Z" />
+
+    <!-- 琥珀金科技光點 -->
+    <path
+        android:fillColor="#D4AF37"
+        android:pathData="M64.5,76.5 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 Z" />
+</vector>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  K.閱讀 v1.2 啟動圖示 — 自適應圖示背景層（提案 A：青黛宣紙）
+  ─────────────────────────────────────────────────────────────────
+  視覺規格（純向量，零點陣圖）：
+   · 全幅沉靜青黛綠底           #245950
+   · 精細內縮框線（60×60dp 圓角矩形描邊、圓角 18dp） #34756A
+  框線內縮 24dp：於圓形 / 圓角方形 / 超橢圓等所有啟動器遮罩下
+  皆可完整顯示（框角最遠半徑 35dp < 72dp 圓形遮罩半徑 36dp）。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 全幅青黛宣紙底色 -->
+    <path
+        android:fillColor="#245950"
+        android:pathData="M0,0 H108 V108 H0 Z" />
+
+    <!-- 精細內縮框線（僅描邊、不填色；內縮 24dp、圓角 18dp） -->
+    <path
+        android:strokeColor="#34756A"
+        android:strokeWidth="1.8"
+        android:pathData="M42,24 H66 A18,18 0 0 1 84,42 V66 A18,18 0 0 1 66,84 H42 A18,18 0 0 1 24,66 V42 A18,18 0 0 1 42,24 Z" />
+</vector>
