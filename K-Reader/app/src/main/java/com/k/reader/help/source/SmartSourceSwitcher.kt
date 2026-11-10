@@ -17,13 +17,12 @@ import com.k.reader.app.AppContext
 import com.k.reader.data.entities.Book
 import com.k.reader.data.entities.BookChapter
 import com.k.reader.data.entities.BookSource
-import com.k.reader.help.BookHelp
+import com.k.reader.help.book.BookHelp
 import com.k.reader.help.http.SslTrustHelper
 import com.k.reader.help.http.SourceRateLimiter
 import com.k.reader.help.http.UserAgentPool
-import com.k.reader.model.webBook.BookList
 import com.k.reader.model.webBook.WebBook
-import com.k.reader.ui.book.read.ReadBook
+import com.k.reader.model.ReadBook
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -236,7 +235,7 @@ object SmartSourceSwitcher {
             val currentUrl = book.bookSourceUrl
             runCatching {
                 /* 接縫：3.0 為 allBookSourceNotLive（若版本差異請對照 BookSourceDao） */
-                AppContext.db.bookSourceDao().allBookSourceNotLive
+                AppContext.db.bookSourceDao().all
             }.getOrNull().orEmpty()
                 .filter { it.enabled == true && !it.searchUrl.isNullOrBlank() }
                 .filter { it.bookSourceUrl != currentUrl }
@@ -385,12 +384,8 @@ object SmartSourceSwitcher {
         SourceRateLimiter.awaitPermit(source.bookSourceUrl)
         val chapters = withTimeoutOrNull(TOC_TIMEOUT_MS) {
             coroutineScope {
-                WebBook.getBookInfo(this, candidate, source) { }
-                val out = mutableListOf<BookChapter>()
-                WebBook.getChapterList(this, candidate, source) { tocData ->
-                    tocData.chapterList?.let { list -> out.addAll(list) }
-                }
-                out
+                WebBook.getBookInfoAwait(source, candidate)
+                WebBook.getChapterListAwait(source, candidate).getOrDefault(emptyList())
             }
         } ?: return null
         if (chapters.isEmpty()) return null
@@ -401,9 +396,7 @@ object SmartSourceSwitcher {
         // 對齊章節正文驗證（與檢核同規格：去空白 ≥ 150 字）
         SourceRateLimiter.awaitPermit(source.bookSourceUrl)
         val contentChars = withTimeoutOrNull(CONTENT_TIMEOUT_MS) {
-            coroutineScope {
-                WebBook.getContent(this, candidate, source, chapter, alignedIndex + 1) { }
-            }
+            WebBook.getContentAwait(source, candidate, chapter)
             BookHelp.getContent(candidate, chapter)?.count { !it.isWhitespace() } ?: 0
         } ?: 0
         if (contentChars < MIN_CONTENT_CHARS) {
@@ -467,10 +460,10 @@ object SmartSourceSwitcher {
                     durChapterTime = System.currentTimeMillis()
                     durChapterTitle = result.chapters[result.alignedIndex].title
                 }
-                AppContext.db.bookDao().insertOrUpdate(book)
-                AppContext.db.bookChapterDao().insertOrUpdate(*result.chapters.toTypedArray())
-                /* 接縫：閱讀頁原地重載（對照 ReadBook.loadChapter(index, resetPage)） */
-                ReadBook.loadChapter(result.alignedIndex, true)
+                AppContext.db.bookDao().insert(book)
+                AppContext.db.bookChapterDao().insert(*result.chapters.toTypedArray())
+                /* 接縫：閱讀頁原地重載（loadContent(index, upContent, resetPageOffset)） */
+                ReadBook.loadContent(result.alignedIndex, true, true)
             }.onFailure { e ->
                 Log.w(TAG, "換源落地失敗：${book.name}", e)
             }.isSuccess
@@ -478,14 +471,12 @@ object SmartSourceSwitcher {
 
     // ═════════════════ Legado 引擎接縫區 ═════════════════
 
-    /** 搜尋（鏡射 SearchModel 的 BookList.search 呼叫） */
+    /** 搜尋（新版 WebBook.searchBookAwait 直取；SearchBook.toBook 轉書） */
     private suspend fun searchBooks(key: String, source: BookSource): List<Book> =
         coroutineScope {
             val out = mutableListOf<Book>()
             runCatching {
-                BookList.search(AppContext.ctx, this, key, source) { searchData ->
-                    searchData.bookList?.let { list -> out.addAll(list) }
-                }
+                out.addAll(WebBook.searchBookAwait(source, key).map { it.toBook() })
             }.onFailure { e ->
                 Log.w(TAG, "換源搜尋失敗：${source.bookSourceName}", e)
             }

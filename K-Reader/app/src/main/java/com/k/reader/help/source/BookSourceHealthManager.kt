@@ -14,11 +14,10 @@ import com.k.reader.app.AppContext
 import com.k.reader.data.entities.Book
 import com.k.reader.data.entities.BookChapter
 import com.k.reader.data.entities.BookSource
-import com.k.reader.help.BookHelp
+import com.k.reader.help.book.BookHelp
 import com.k.reader.help.http.SslTrustHelper
 import com.k.reader.help.http.SourceRateLimiter
 import com.k.reader.help.http.UserAgentPool
-import com.k.reader.model.webBook.BookList
 import com.k.reader.model.webBook.WebBook
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -206,7 +205,7 @@ object BookSourceHealthManager {
     private suspend fun collectVerifiableSources(): List<BookSource> = withContext(Dispatchers.IO) {
         runCatching {
             /* 接縫：3.0 為 allBookSourceNotLive（若版本差異請對照 BookSourceDao） */
-            AppContext.db.bookSourceDao().allBookSourceNotLive
+            AppContext.db.bookSourceDao().all
         }.getOrNull().orEmpty()
             .filter { it.enabled == true && !it.searchUrl.isNullOrBlank() }
     }
@@ -383,7 +382,7 @@ object BookSourceHealthManager {
             runCatching {
                 source.respondTime = latencyMs
                 /* 接縫：Room 寫回（BaseDao 泛型 insertOrUpdate） */
-                AppContext.db.bookSourceDao().insertOrUpdate(source)
+                AppContext.db.bookSourceDao().insert(source)
             }.onFailure { e ->
                 Log.w(TAG, "respondTime 寫回失敗：${source.bookSourceName}", e)
             }
@@ -397,26 +396,17 @@ object BookSourceHealthManager {
 
     // ═════════════════ Legado 引擎接縫區 ═════════════════
 
-    /** 搜尋（鏡射 SearchModel 的 BookList.search 呼叫；失敗直接拋出） */
-    private suspend fun searchBooks(key: String, source: BookSource): List<Book> = coroutineScope {
-        val out = mutableListOf<Book>()
-        BookList.search(AppContext.ctx, this, key, source) { searchData ->
-            searchData.bookList?.let { list -> out.addAll(list) }
-        }
-        out
-    }
+    /** 搜尋（新版 WebBook.searchBookAwait 直取；失敗直接拋出） */
+    private suspend fun searchBooks(key: String, source: BookSource): List<Book> =
+        WebBook.searchBookAwait(source, key).map { it.toBook() }
 
-    /** 詳情＋目錄（鏡射 BookInfoViewModel 與 TocViewModel 的組合呼叫） */
+    /** 詳情＋目錄（新版 getBookInfoAwait＋getChapterListAwait 組合） */
     private suspend fun loadChapterList(
         book: Book,
         source: BookSource
     ): List<BookChapter> = coroutineScope {
-        WebBook.getBookInfo(this, book, source) { }
-        val out = mutableListOf<BookChapter>()
-        WebBook.getChapterList(this, book, source) { tocData ->
-            tocData.chapterList?.let { list -> out.addAll(list) }
-        }
-        out
+        WebBook.getBookInfoAwait(source, book)
+        WebBook.getChapterListAwait(source, book).getOrDefault(emptyList())
     }
 
     /** 首章正文（鏡射 ContentViewModel：觸發抓取寫入快取後讀回） */
@@ -425,7 +415,7 @@ object BookSourceHealthManager {
         chapter: BookChapter,
         source: BookSource
     ): String? = coroutineScope {
-        WebBook.getContent(this, book, source, chapter, chapter.index + 1) { }
+        WebBook.getContentAwait(source, book, chapter)
         BookHelp.getContent(book, chapter)
     }
 }

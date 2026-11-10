@@ -20,11 +20,10 @@ import com.k.reader.app.AppContext
 import com.k.reader.data.entities.Book
 import com.k.reader.data.entities.BookChapter
 import com.k.reader.data.entities.BookSource
-import com.k.reader.help.BookHelp
+import com.k.reader.help.book.BookHelp
 import com.k.reader.help.http.SourceRateLimiter
-import com.k.reader.model.webBook.BookList
 import com.k.reader.model.webBook.WebBook
-import com.k.reader.ui.book.read.ReadBook
+import com.k.reader.model.ReadBook
 import com.k.reader.ui.book.read.ReadBookActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -173,7 +172,7 @@ object RandomTrialManager {
         // 1) 收集可用書源（啟用且可搜尋），洗牌增加隨機性
         val sources = runCatching {
             /* 接縫：3.0 為 allBookSourceNotLive（若版本差異請對照 BookSourceDao） */
-            AppContext.db.bookSourceDao().allBookSourceNotLive
+            AppContext.db.bookSourceDao().all
         }.getOrNull().orEmpty()
             .filter { it.enabled == true && !it.searchUrl.isNullOrBlank() }
         if (sources.isEmpty()) return null
@@ -234,34 +233,30 @@ object RandomTrialManager {
 
     // ═════════════════ Legado 引擎接縫區 ═════════════════
 
-    /** 搜尋（鏡射 SearchModel 的 BookList.search 呼叫） */
+    /** 搜尋（新版 WebBook.searchBookAwait 直取；SearchBook.toBook 轉書） */
     private suspend fun searchBooks(key: String, source: BookSource): List<Book> = coroutineScope {
         val out = mutableListOf<Book>()
         runCatching {
-            BookList.search(AppContext.ctx, this, key, source) { searchData ->
-                searchData.bookList?.let { list -> out.addAll(list) }
-            }
+            out.addAll(WebBook.searchBookAwait(source, key).map { it.toBook() })
         }.onFailure { e ->
             Log.w(TAG, "搜尋失敗：${source.bookSourceName}", e)
         }
         out
     }
 
-    /** 書籍詳情（鏡射 BookInfoViewModel；完成後 book 即帶 tocUrl／intro 等欄位） */
+    /** 書籍詳情（新版 getBookInfoAwait；完成後 book 即帶 tocUrl／intro 等欄位） */
     private suspend fun loadBookInfo(book: Book, source: BookSource): Boolean = coroutineScope {
         runCatching {
-            WebBook.getBookInfo(this, book, source) { }
+            WebBook.getBookInfoAwait(source, book)
             true
         }.getOrDefault(false)
     }
 
-    /** 目錄（鏡射 TocViewModel；章節清單由回呼交付） */
+    /** 目錄（新版 getChapterListAwait 回 Result） */
     private suspend fun loadChapterList(book: Book, source: BookSource): List<BookChapter> = coroutineScope {
         val out = mutableListOf<BookChapter>()
         runCatching {
-            WebBook.getChapterList(this, book, source) { tocData ->
-                tocData.chapterList?.let { list -> out.addAll(list) }
-            }
+            out.addAll(WebBook.getChapterListAwait(source, book).getOrDefault(emptyList()))
         }.onFailure { e ->
             Log.w(TAG, "目錄失敗：${book.name}", e)
         }
@@ -275,7 +270,7 @@ object RandomTrialManager {
         source: BookSource
     ): String? = coroutineScope {
         runCatching {
-            WebBook.getContent(this, book, source, chapter, chapter.index + 1) { }
+            WebBook.getContentAwait(source, book, chapter)
             BookHelp.getContent(book, chapter)
         }.getOrNull()
     }
@@ -288,8 +283,8 @@ object RandomTrialManager {
             book.durChapterPos = 0
             book.durChapterTime = System.currentTimeMillis()
             /* 接縫：Room 寫入（3.0 BaseDao 提供泛型 insertOrUpdate） */
-            AppContext.db.bookDao().insertOrUpdate(book)
-            AppContext.db.bookChapterDao().insertOrUpdate(*chapters.toTypedArray())
+            AppContext.db.bookDao().insert(book)
+            AppContext.db.bookChapterDao().insert(*chapters.toTypedArray())
             markTrial(book.bookUrl)
             Log.i(TAG, "試讀就緒：${book.name}（${book.originName}）")
         }
@@ -304,8 +299,8 @@ object RandomTrialManager {
         runCatching {
             val book = AppContext.db.bookDao().getBook(bookUrl) ?: return@runCatching
             /* 接縫：Room / 快取清除（對照 BookshelfModel 的刪書流程） */
-            AppContext.db.bookChapterDao().deleteByBookUrl(bookUrl)
-            AppContext.db.bookDao().deleteBook(book)
+            AppContext.db.bookChapterDao().delByBook(bookUrl)
+            AppContext.db.bookDao().delete(book)
             BookHelp.clearCache(book)
             Log.i(TAG, "已清除試讀暫存：${book.name}")
         }.onFailure { e ->

@@ -292,13 +292,13 @@ object WebDavHelper {
     /** 還原寫回（Legado 引擎接縫區——冪等 insertOrUpdate） */
     private suspend fun restorePayload(payload: BackupPayload) {
         payload.bookSources.forEach {
-            AppContext.db.bookSourceDao().insertOrUpdate(it)
+            AppContext.db.bookSourceDao().insert(it)
         }
         payload.rssSources.forEach {
-            AppContext.db.rssSourceDao().insertOrUpdate(it)
+            AppContext.db.rssSourceDao().insert(it)
         }
         payload.books.forEach {
-            AppContext.db.bookDao().insertOrUpdate(it)
+            AppContext.db.bookDao().insert(it)
         }
         Log.i(
             TAG,
@@ -445,18 +445,18 @@ object WebDavHelper {
     private suspend fun buildPayload(): BackupPayload = withContext(Dispatchers.IO) {
         /* 接縫：3.0 為 allBookSourceNotLive（版本差異請對照 BookSourceDao） */
         val bookSources = runCatching {
-            AppContext.db.bookSourceDao().allBookSourceNotLive
+            AppContext.db.bookSourceDao().all
         }.getOrNull().orEmpty()
 
         /* 接縫：3.0 為 allRssSourceNotLive（版本差異請對照 RssSourceDao） */
         val rssSources = runCatching {
-            AppContext.db.rssSourceDao().allRssSourceNotLive
+            AppContext.db.rssSourceDao().all
         }.getOrNull().orEmpty()
 
         /* 接縫：3.0 為 bookDao.getAll（若為 LiveData 形態請對照
            BookDao 改用非 Live 查詢；讀取失敗僅略過書籍，不炸備份） */
         val books = runCatching {
-            AppContext.db.bookDao().getAll() as? List<Book>
+            AppContext.db.bookDao().all
         }.getOrNull().orEmpty()
 
         BackupPayload(

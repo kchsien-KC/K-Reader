@@ -26,10 +26,10 @@ import androidx.media.session.MediaSessionCompat
 import com.k.reader.R
 import com.k.reader.app.AppContext
 import com.k.reader.data.entities.Book
-import com.k.reader.help.BookHelp
+import com.k.reader.help.book.BookHelp
 import com.k.reader.help.tts.HttpTtsEngine
 import com.k.reader.model.webBook.WebBook
-import com.k.reader.ui.book.read.ReadBook
+import com.k.reader.model.ReadBook
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -360,7 +360,8 @@ class HttpReadAloudService : Service() {
                 /* 接縫：BookChapterDao.getChapterList（版本差異請對照） */
                 val chapters = AppContext.db.bookChapterDao().getChapterList(book.bookUrl)
                 val chapter = chapters.getOrNull(index) ?: return@runCatching null
-                WebBook.getContent(this, book, source, chapter, index + 1) { }
+                /* 接縫：新版 getContentAwait（觸發抓取寫入快取）後 BookHelp 讀回 */
+                WebBook.getContentAwait(source, book, chapter)
                 BookHelp.getContent(book, chapter)
             }.getOrNull()
         }
@@ -379,9 +380,9 @@ class HttpReadAloudService : Service() {
                 book.durChapterPos = 0
                 book.durChapterTime = System.currentTimeMillis()
                 /* 接縫：Room 進度寫回 */
-                AppContext.db.bookDao().insertOrUpdate(book)
-                /* 接縫：閱讀頁同步跟隨（對照 ReadBook.moveToNextChapter()） */
-                ReadBook.moveToNextChapter()
+                AppContext.db.bookDao().insert(book)
+                /* 接縫：閱讀頁同步跟隨（moveToNextChapter(upContent)） */
+                ReadBook.moveToNextChapter(true)
             }
         }
 

@@ -288,7 +288,7 @@ object ClipboardSourceDetector {
         }
         val ok = runCatching {
             /* 接縫：BaseDao 泛型 insertOrUpdate（存在即更新） */
-            AppContext.db.bookSourceDao().insertOrUpdate(*sources.toTypedArray())
+            AppContext.db.bookSourceDao().insert(*sources.toTypedArray())
         }.onFailure { e ->
             Log.w(TAG, "書源匯入寫入失敗", e)
         }.isSuccess
@@ -310,7 +310,7 @@ object ClipboardSourceDetector {
             }
         }
         val ok = runCatching {
-            AppContext.db.rssSourceDao().insertOrUpdate(*sources.toTypedArray())
+            AppContext.db.rssSourceDao().insert(*sources.toTypedArray())
         }.onFailure { e ->
             Log.w(TAG, "訂閱源匯入寫入失敗", e)
         }.isSuccess
@@ -348,14 +348,14 @@ object ClipboardSourceDetector {
     private suspend fun existingBookSourceUrls(): Set<String> = withContext(Dispatchers.IO) {
         runCatching {
             /* 接縫：3.0 為 allBookSourceNotLive（若版本差異請對照 BookSourceDao） */
-            AppContext.db.bookSourceDao().allBookSourceNotLive
+            AppContext.db.bookSourceDao().all
         }.getOrNull().orEmpty().mapNotNull { it.bookSourceUrl }.toSet()
     }
 
     private suspend fun existingRssSourceUrls(): Set<String> = withContext(Dispatchers.IO) {
         runCatching {
             /* 接縫：3.0 為 allRssSourceNotLive（若版本差異請對照 RssSourceDao） */
-            AppContext.db.rssSourceDao().allRssSourceNotLive
+            AppContext.db.rssSourceDao().all
         }.getOrNull().orEmpty().mapNotNull { it.sourceUrl }.toSet()
     }
 
