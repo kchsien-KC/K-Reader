@@ -283,4 +283,59 @@
     <string name="feedback">意見回饋</string>
     <string name="setting">設定</string>
     <string name="exit_app">再按一次返回鍵退出</string>
+
+    <!-- ═══════════ Stage 7：隱私鎖 ═══════════ -->
+    <string name="privacy_lock">隱私鎖</string>
+    <string name="privacy_lock_biometric_hint">請觸碰指紋感應器或面向鏡頭解鎖</string>
+    <string name="privacy_lock_use_pin">改用 PIN 碼</string>
+    <string name="privacy_lock_pin_hint">輸入 4–6 位數字 PIN 碼</string>
+    <string name="privacy_lock_pin_wrong_with_left">PIN 碼錯誤（剩 %1$d 次機會）</string>
+    <string name="privacy_lock_cooldown">嘗試次數過多，請於 %1$d 秒後再試</string>
+    <string name="privacy_lock_timing">鎖定時機</string>
+    <string name="privacy_lock_timing_immediate">退出立即鎖定</string>
+    <string name="privacy_lock_timing_short">背景 30 秒後鎖定</string>
+    <string name="privacy_lock_timing_long">背景 5 分鐘後鎖定</string>
+    <string name="privacy_lock_on">已啟用隱私鎖，書架只屬於你</string>
+    <string name="privacy_lock_no_biometric">此裝置不支援生物辨識，將以 PIN 碼解鎖</string>
+
+    <!-- ═══════════ Stage 7：台灣排版規範 ═══════════ -->
+    <string name="typography_rules">排版規範（台灣）</string>
+    <string name="typography_line_break">避頭尾禁則</string>
+    <string name="typography_punct_compress">連續標點擠壓</string>
+    <string name="typography_first_indent">首行縮排兩字元</string>
+    <string name="typography_blank_merge">連續空行合併</string>
+    <string name="typography_applied">已依台灣排版規範重排本文</string>
+    <string name="typography_preview_line_count">預覽：%1$d 行</string>
+
+    <!-- ═══════════ Stage 7：自動追更 ═══════════ -->
+    <string name="schedule_update">自動追更</string>
+    <string name="schedule_update_interval">更新頻率</string>
+    <string name="schedule_interval_6h">每 6 小時</string>
+    <string name="schedule_interval_12h">每 12 小時</string>
+    <string name="schedule_interval_24h">每日一次</string>
+    <string name="schedule_update_wifi_only">僅在 Wi-Fi 時追更</string>
+    <string name="schedule_update_charging">僅在充電時追更</string>
+    <string name="schedule_update_quiet_hours">深夜時段暫緩（23:00–07:00）</string>
+    <string name="schedule_update_last_result">上次追更：%1$d 本有新章</string>
+    <string name="schedule_update_never">尚未執行追更</string>
+
+    <!-- ═══════════ Stage 7：護眼色溫 ═══════════ -->
+    <string name="color_temp_title">護眼色溫</string>
+    <string name="color_temp_off">停用</string>
+    <string name="color_temp_manual">手動色溫（%1$d K）</string>
+    <string name="color_temp_auto_sunset">日落後自動調暖</string>
+    <string name="color_temp_warmth">暖度</string>
+    <string name="color_temp_brightness_link">亮度降低時自動更暖</string>
+    <string name="color_temp_skip_eink">墨水屏模式下不套用色溫濾鏡</string>
+    <string name="color_temp_preview">雲收山靜，風起波瀾</string>
+
+    <!-- ═══════════ Stage 7：字詞快查 ═══════════ -->
+    <string name="dict_lookup">查詢「%1$s」</string>
+    <string name="dict_idiom">成語典</string>
+    <string name="dict_moedict">教育部辭典</string>
+    <string name="dict_wiki">維基百科</string>
+    <string name="dict_searching">查詢中…</string>
+    <string name="dict_not_found">查無此詞</string>
+    <string name="dict_copy_definition">複製釋義</string>
+    <string name="dict_open_in_browser">以瀏覽器開啟</string>
 </resources>

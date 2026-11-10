@@ -1,6 +1,6 @@
 # K.閱讀 v1.2 旗艦純淨版 — 階段交付檔清單
 
-以純淨開源「閱讀（Legado 3.0）」架構為起點，六階段逐段交付。
+以純淨開源「閱讀（Legado 3.0）」架構為起點，七階段逐段交付（Stage 1~6 原規劃＋Stage 7 旗艦增益包）。
 套名為 Stage 6 `init_k_reader.sh` 重構後之 `com.k.reader`（applicationId：`com.k.reader`）。
 
 ## Stage 1 — 專案識別與編譯配置（已完成）
@@ -77,6 +77,23 @@
 
 壓縮包：`K_Reader_Stage6_files.zip`（4 檔，路徑即 Legado 3.0 樹落點；`app/build.gradle.kts` 為整合修正版，套用時覆蓋 Stage 1 版本）。
 
+## Stage 7 — 隱私鎖＋台灣排版規範＋自動追更＋護眼色溫＋字詞快查（已完成）
+
+| 檔案 | 行數 | 說明 |
+| --- | --- | --- |
+| `app/src/main/java/com/k/reader/help/lock/PrivacyLockManager.kt` | 346 | 隱私鎖：BiometricPrompt 生物辨識優先＋PIN 碼備援（4–6 位數字）；固定鹽＋SHA-256 雜湊儲存（明文永不落地）；鎖定時機三檔（退出立即／背景 30 秒／背景 5 分鐘）；連續失敗 5 次 30 秒冷卻（計數與截止時間戳跨啟動——重啟不可繞過）；lockIfNeeded 單一閘口掛 MainActivity.onResume |
+| `app/src/main/java/com/k/reader/help/content/TextLayoutHelper.kt` | 272 | 台灣排版規範引擎：避頭尾禁則（行首／行尾禁則字元表＋U+2060 WORD JOINER 零寬黏連——斷行引擎不落刀）；連續標點擠壓建議（密度→textScaleX 0.92 微縮）；首行縮排兩全形字；連續空行合併；冪等設計（重複套用不疊加）；StaticLayout 預覽量測 |
+| `app/src/main/java/com/k/reader/help/update/ScheduledUpdateManager.kt` | 254 | 自動追更排程：WorkManager 週期三檔（6／12／24 小時）；條件閘（僅 Wi-Fi→UNMETERED、僅充電→setRequiresCharging）；深夜靜默窗（23:00–07:00 retry 順延）；performUpdateCycle 閘門與結果記錄（上次追更 N 本有新章）；KEEP／UPDATE 雙策略（啟動不重起算、設定變更即時生效） |
+| `app/src/main/java/com/k/reader/help/config/ColorTemperatureHelper.kt` | 293 | 護眼色溫：Tanner Helland 色溫→RGB 演算法（2800–6500K 連續可調、零資源檔）；三模式（手動／日落自動——月份餘弦內插日落時刻 17:15–18:45 不定位零隱私／停用）；亮度聯動（<30% 再暖 400K）；ColorMatrix 對角濾波掛 Paint；墨水屏（EInkHelper 串接）自動跳過 |
+| `app/src/main/java/com/k/reader/help/dict/DictLookupHelper.kt` | 293 | 字詞快查三源：內建 60 條精選成語典（離線零延遲）＋萌典 API（教育部《重編國語辭典修訂本》釋義前 3 條）＋維基百科 REST 摘要；三件套護航（瀏覽器級標頭＋單源限流＋SSL 寬容重試）；24 小時 TTL 快取（重查零流量）；三源獨立成敗不互相污染 |
+| `app/src/main/res/layout/dialog_privacy_pin.xml` | 67 | PIN 解鎖對話框：Material TextInputLayout（OutlinedBox＋counter 6 位）＋數字密碼鍵盤＋解鎖說明列；純主題屬性、RTL 友善；不可逃逸（setOnCancelListener 重開） |
+| `app/src/main/res/layout/dialog_dict_lookup.xml` | 107 | 字詞快查對話框：查詢詞大字標題（主色）＋dict_searching 狀態列（預設 gone）＋320dp 上限捲動結果區（行距 1.5）＋一鍵複製釋義實心鈕；與 dialog_ai_assistant 同款視覺語言 |
+| `app/src/main/res/values-zh-rTW/strings.xml`（更新版） | 341 | Stage 7 新增 45 鍵（241→286，只增不刪）：隱私鎖 12 鍵＋排版規範 7 鍵＋自動追更 10 鍵＋護眼色溫 8 鍵＋字詞快查 8 鍵；套用時覆蓋 Stage 1 版本（init 腳本「只增不刪」合併自動吸納上游既有鍵） |
+| `init_k_reader.sh`（整合修正版） | 342 | Stage 7 擴充：關鍵檔清單納入五個新 Kotlin 模組（25 檔驗證）＋「七階段」字樣同步；套用時覆蓋 Stage 6 版本 |
+| `README.md`（整合修正版） | 145 | Stage 7 收錄：旗艦功能一覽 20 領域（＋隱私防護／排版美學／自動化運維／護眼／字詞快查）、25 Kotlin 模組／286 鍵結構樹、七階段交付對照；套用時覆蓋 Stage 6 版本 |
+
+壓縮包：`K_Reader_Stage7_files.zip`（10 檔，路徑即 Legado 3.0 樹落點；`strings.xml`／`init_k_reader.sh`／`README.md` 為整合修正版，套用時覆蓋前階段版本）。
+
 ## 交付完結
 
-六階段全數交付完成。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。
+七階段全數交付完成（Stage 1~6 原規劃＋Stage 7 旗艦增益包）。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。

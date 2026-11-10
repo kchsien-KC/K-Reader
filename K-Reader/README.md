@@ -8,7 +8,7 @@
 
 ---
 
-## 旗艦功能一覽（六階段交付）
+## 旗艦功能一覽（七階段交付）
 
 | 領域 | 功能 |
 | --- | --- |
@@ -27,6 +27,11 @@
 | 裝置適配 | E-Ink 墨水屏模式（高對比純黑白＋動畫歸零＋電子紙偵測） |
 | 雲端 | WebDAV 備份（PROPFIND/MKCOL/PUT/GET/DELETE＋自動增量每 12 小時） |
 | AI | 閱讀助手（OpenAI 相容端點：段落摘要／文言文白話翻譯／深度解讀） |
+| 隱私防護 | 隱私鎖（生物辨識優先＋PIN 碼備援＋鹽＋SHA-256 雜湊儲存＋失敗 5 次冷卻） |
+| 排版美學 | 台灣排版規範（避頭尾禁則＋連續標點擠壓＋首行縮排兩字元） |
+| 自動化運維 | 自動追更（WorkManager 6/12/24h＋Wi-Fi／充電閘＋深夜靜默窗） |
+| 護眼 | 色溫濾鏡（2800–6500K ColorMatrix＋日落自動＋亮度聯動；墨水屏跳過） |
+| 字詞快查 | 三源詞庫（內建 60 條成語典＋教育部辭典＋維基摘要；24h 快取） |
 
 ## 與原版「閱讀」完全隔離
 
@@ -51,7 +56,7 @@ WebDAV 備份端點、你設定的 AI 端點。無任何背景資料回報。
 ```
 
 腳本執行八大步驟（冪等可重跑）：套名重構 `io.legado.app → com.k.reader`、
-產生根專案案檔、疊加六階段交付檔、繁中字串「只增不刪」合併、FileProvider
+產生根專案檔、疊加七階段交付檔、繁中字串「只增不刪」合併、FileProvider
 authority 統一、mipmap 點陣圖清剿（零點陣圖規範）、Gradle Wrapper 對齊 8.7、
 完整性驗證。`--help` 可看完整說明。
 
@@ -105,19 +110,19 @@ git tag v1.2 && git push origin main --tags
 ## 本倉庫結構（疊加層）
 
 ```
-├── init_k_reader.sh                # 一鍵套名重構腳本（Stage 6）
-├── README.md                       # 本文件（Stage 6）
+├── init_k_reader.sh                # 一鍵套名重構腳本（Stage 6；Stage 7 擴七階段）
+├── README.md                       # 本文件（Stage 6；Stage 7 增益包收錄）
 ├── gradle.properties               # 全域建置參數（R8 full mode 等）
 ├── .github/workflows/build.yml     # Tag 觸發雲端編譯（Stage 6）
 └── app/
     ├── build.gradle.kts            # applicationId／簽章／依賴（Stage 1）
     ├── proguard-rules.pro          # R8 keep 規則（Stage 1）
     └── src/main/
-        ├── java/com/k/reader/…     # 20 個 Kotlin 模組（Stage 2~5）
-        └── res/                    # 圖示／布局／241 鍵繁中字串（Stage 1~5）
+        ├── java/com/k/reader/…     # 25 個 Kotlin 模組（Stage 2~5、7）
+        └── res/                    # 圖示／布局／286 鍵繁中字串（Stage 1~5、7）
 ```
 
-## 六階段交付對照
+## 七階段交付對照
 
 | 階段 | 範圍 |
 | --- | --- |
@@ -126,10 +131,12 @@ git tag v1.2 && git push origin main --tags
 | Stage 3 | 書源／訂閱源完整鏈路檢核與智慧分組 |
 | Stage 4 | WebView 過盾＋剪貼簿偵測＋HTTP 聽書＋智慧換源 |
 | Stage 5 | 淨化規則包＋回收站＋金句卡＋閱讀統計＋E-Ink＋WebDAV＋AI 助手 |
-| Stage 6 | README＋GitHub Actions 雲端編譯＋init_k_reader.sh（本階段） |
+| Stage 6 | README＋GitHub Actions 雲端編譯＋init_k_reader.sh |
+| Stage 7 | 隱私鎖＋台灣排版規範＋自動追更＋護眼色溫＋字詞快查（增益包） |
 
 Stage 6 整合修正：`app/build.gradle.kts` 之 FileProvider authority 統一為
-`com.k.reader.filen`（與 Stage 5 `GoldenQuoteManager` 常數對齊）。
+`com.k.reader.filen`（與 Stage 5 `GoldenQuoteManager` 常數對齊）。Stage 7
+同步擴充 `init_k_reader.sh` 關鍵檔清單與繁中字串（286 鍵，只增不刪）。
 
 ## 授權
 

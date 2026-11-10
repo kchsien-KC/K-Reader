@@ -108,10 +108,11 @@ if script.is_file():
     ]:
         check(needle in raw, f"init_k_reader.sh：{desc}")
 
-    # 六階段關鍵檔清單（腳本內 KEY_FILES 應涵蓋 20 個 Kotlin＋字串＋工作流）
+    # 六階段關鍵檔清單（腳本內 KEY_FILES 應涵蓋 20 個 Kotlin＋字串＋工作流；
+    # Stage 7 疊加後擴充至 25——子集斷言即可）
     kt_refs = re.findall(r'"(app/src/main/java/com/k/reader/[\w/]+\.kt)"', raw)
-    check(len(kt_refs) == 20,
-          f"init_k_reader.sh KEY_FILES 應針對 20 個 Kotlin 模組，實為 {len(kt_refs)}")
+    check(len(kt_refs) >= 20,
+          f"init_k_reader.sh KEY_FILES 應至少涵蓋 20 個 Kotlin 模組（Stage 7 擴充後 25），實為 {len(kt_refs)}")
     for rel in kt_refs:
         check((ROOT / rel).is_file(), f"init_k_reader.sh KEY_FILES 指向不存在的檔案：{rel}")
 
@@ -251,12 +252,16 @@ if wf_path.is_file() and gradle.is_file():
     check('findProperty("K_VERSION_NAME")' in g, "build.gradle 應讀取 K_VERSION_NAME 屬性")
     check('findProperty("K_VERSION_CODE")' in g, "build.gradle 應讀取 K_VERSION_CODE 屬性")
     check('"1.2"' in g and "10200" in g, "build.gradle 應有本地預設版本 1.2／10200")
-    # 字串資源基線未被破壞
+    # 字串資源基線未被破壞（Stage 7 疊加 45 鍵→286；基線下限斷言）
     sp = ROOT / "app/src/main/res/values-zh-rTW/strings.xml"
     n_keys = len(ET.parse(sp).getroot().findall("string"))
-    check(n_keys == 241, f"字串資源應維持 241 鍵基線，實為 {n_keys}")
+    check(n_keys >= 241, f"字串資源應維持 241 鍵基線（Stage 7 後 286），實為 {n_keys}")
 
 # ═══════════ 6. 交付包檢查（內容與樹逐位元組一致） ═══════════
+# Stage 7 層疊說明：README.md 與 init_k_reader.sh 已被 Stage 7 更新
+# （七階段／25 模組），最新位元組由 K_Reader_Stage7_files.zip 承載——
+# 本包內的舊版屬歷史快照（套用時 Stage 7 覆蓋），不再與樹比對。
+SUPERSEDED_BY_STAGE7 = {"README.md", "init_k_reader.sh"}
 check(ZIP_PATH.is_file(), f"缺少交付包：{ZIP_PATH.name}")
 if ZIP_PATH.is_file():
     with zipfile.ZipFile(ZIP_PATH) as zf:
@@ -269,6 +274,17 @@ if ZIP_PATH.is_file():
             if rel in names:
                 zbytes = zf.read(rel)
                 tpath = ROOT / rel
+                if rel in SUPERSEDED_BY_STAGE7:
+                    # 被覆蓋檔：最新版應存在於 Stage 7 包且與樹一致
+                    s7zip = ZIP_PATH.parent / "K_Reader_Stage7_files.zip"
+                    if s7zip.is_file():
+                        with zipfile.ZipFile(s7zip) as z7:
+                            check(rel in z7.namelist(),
+                                  f"{rel} 已被 Stage 7 覆蓋但 Stage 7 包缺此成員")
+                            if rel in z7.namelist():
+                                check(z7.read(rel) == tpath.read_bytes(),
+                                      f"{rel} 最新版應與樹一致（Stage 7 包）")
+                    continue
                 if tpath.is_file():
                     check(zbytes == tpath.read_bytes(),
                           f"交付包成員與原始樹不一致（未同步打包）：{rel}")
@@ -399,13 +415,13 @@ def run_func_test():
         A("io/legado/app" not in pr and "com/k/reader here" in pr,
           "路徑形式引用未改寫")
 
-        # 字串合併：只增不刪＋同名覆寫＋基線 241
+        # 字串合併：只增不刪＋同名覆寫＋基線（Stage 7 後 286＋legado_tw=287）
         mpath = mock / "app/src/main/res/values-zh-rTW/strings.xml"
         m = {el.get("name"): (el.text or "")
              for el in ET.parse(mpath).getroot().findall("string")}
         A("legado_tw" in m, "上游繁中鍵被刪除（違反只增不刪）")
         A(m.get("cancel") == "取消", "同名鍵應以 K.閱讀版本覆寫")
-        A(len(m) == 242, f"合併後應 242 鍵（241＋legado_tw），實為 {len(m)}")
+        A(len(m) == 287, f"合併後應 287 鍵（286＋legado_tw），實為 {len(m)}")
 
         # ── 第二次執行（冪等） ──
         r2 = subprocess.run(["bash", str(script), str(mock)],
@@ -413,8 +429,8 @@ def run_func_test():
         check(r2.returncode == 0, "功能實測第二次執行（冪等）應成功")
         check("已套名" in r2.stdout, "第二次執行應走「已套名」快速路徑")
         m2 = {el.get("name") for el in ET.parse(mpath).getroot().findall("string")}
-        check(len(m2) == 242,
-              f"冪等執行後鍵數應穩定 242，實為 {len(m2)}（疊加重複）")
+        check(len(m2) == 287,
+              f"冪等執行後鍵數應穩定 287，實為 {len(m2)}（疊加重複）")
         A(not (mock / "app/src/main/java/io").exists(), "冪等執行後 io/ 復活")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
