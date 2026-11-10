@@ -9,12 +9,12 @@
 #  執行八大步驟：
 #    1. 套名重構   io.legado.app → com.k.reader（目錄搬移＋全樹文字改寫）
 #    2. 根專案檔   產出 settings.gradle.kts / 根 build.gradle.kts
-#    3. 疊加層落地 app 模組建置腳本＋十一階段全部 Kotlin／資源檔
+#    3. 疊加層落地 app 模組建置腳本＋十二階段全部 Kotlin／資源檔
 #    4. 字串合併   values-zh-rTW/strings.xml「只增不刪」合併（保留上游既有鍵）
 #    5. 授權統一   FileProvider authority 統一為 com.k.reader.filen
 #    6. 圖示純淨化 刪除上游 mipmap 點陣圖殘留（貫徹零點陣圖規範）
 #    7. 對齊工具鏈 Gradle Wrapper → 8.7（AGP 8.5.x / Kotlin 1.9.24 / JDK 17）
-#    8. 完整性驗證 殘留引用歸零＋十一階段關鍵檔到齊
+#    8. 完整性驗證 殘留引用歸零＋十二階段關鍵檔到齊
 #
 #  用法：
 #    ./init_k_reader.sh <path/to/legado-3.0-tree>
@@ -75,7 +75,7 @@ printf '  目標樹：%s\n  重疊層：%s\n' "$T" "$OVERLAY_DIR"
 PRUNE=( -not -path '*/.git/*' -not -path '*/.gradle/*'
         -not -path '*/build/*' -not -path '*/.idea/*' )
 
-# 十一階段關鍵檔（驗證用）
+# 十二階段關鍵檔（驗證用）
 KEY_FILES=(
     "app/src/main/java/com/k/reader/help/http/UserAgentPool.kt"
     "app/src/main/java/com/k/reader/help/http/SourceRateLimiter.kt"
@@ -122,8 +122,14 @@ KEY_FILES=(
     "app/src/main/java/com/k/reader/help/share/BookShareCardHelper.kt"
     "app/src/main/java/com/k/reader/help/timeline/ReadingTimelineHelper.kt"
     "app/src/main/java/com/k/reader/help/challenge/ReadingChallengeManager.kt"
+    "app/src/main/java/com/k/reader/help/profile/ReadingProfileManager.kt"
+    "app/src/main/java/com/k/reader/help/tts/TtsTuningHelper.kt"
+    "app/src/main/java/com/k/reader/help/content/WordFrequencyHelper.kt"
+    "app/src/main/java/com/k/reader/help/queue/ReadingQueueManager.kt"
+    "app/src/main/java/com/k/reader/help/statistics/ReadingPaceHelper.kt"
     "app/src/main/res/layout/dialog_source_repo.xml"
     "app/src/main/res/layout/dialog_badges.xml"
+    "app/src/main/res/layout/dialog_queue.xml"
     "app/src/main/res/values-zh-rTW/strings.xml"
     ".github/workflows/build.yml"
 )
@@ -200,7 +206,7 @@ EOF
 good "根專案檔已產出（rootProject.name = KReader，模組 :app）"
 
 # ═════════════════ 3. 疊加層落地 ═════════════════
-step "3/8 疊加層落地（十一階段交付檔）"
+step "3/8 疊加層落地（十二階段交付檔）"
 
 for entry in app gradle.properties .github README.md init_k_reader.sh; do
     [ -e "$OVERLAY_DIR/$entry" ] || die "重疊層缺少必要項目：$entry"
@@ -223,7 +229,7 @@ cp -a "$OVERLAY_DIR/gradle.properties" "$OVERLAY_DIR/README.md" \
       "$OVERLAY_DIR/init_k_reader.sh" "$T/"
 chmod +x "$T/init_k_reader.sh"
 if [ -f "$T/gradlew" ]; then chmod +x "$T/gradlew"; fi
-good "app 建置腳本＋45 個 Kotlin 模組＋資源＋工作流＋文件已落地"
+good "app 建置腳本＋50 個 Kotlin 模組＋資源＋工作流＋文件已落地"
 
 # ═════════════════ 4. 字串資源合併（只增不刪） ═════════════════
 step "4/8 繁中字串合併（values-zh-rTW/strings.xml）"
@@ -331,7 +337,7 @@ for f in "${KEY_FILES[@]}"; do
     [ -f "$T/$f" ] || missing+=("$f")
 done
 if [ "${#missing[@]}" -eq 0 ]; then
-    good "十一階段關鍵檔 ${#KEY_FILES[@]}/${#KEY_FILES[@]} 到齊"
+    good "十二階段關鍵檔 ${#KEY_FILES[@]}/${#KEY_FILES[@]} 到齊"
 else
     for f in "${missing[@]}"; do
         printf '  %s✘%s 缺少：%s\n' "$C_BAD" "$C_OFF" "$f"

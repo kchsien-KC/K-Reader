@@ -8,7 +8,7 @@
 
 ---
 
-## 旗艦功能一覽（十一階段交付）
+## 旗艦功能一覽（十二階段交付）
 
 | 領域 | 功能 |
 | --- | --- |
@@ -137,7 +137,7 @@ git tag v1.2 && git push origin main --tags
         └── res/                    # 圖示／布局／485 鍵繁中字串（Stage 1~5、7~10）
 ```
 
-## 十一階段交付對照
+## 十二階段交付對照
 
 | 階段 | 範圍 |
 | --- | --- |
@@ -152,6 +152,7 @@ git tag v1.2 && git push origin main --tags
 | Stage 9 | 章節書籤＋離線快取＋聽書睡眠定時＋自訂字體＋翻頁手勢（閱讀體驗增益包） |
 | Stage 10 | 本地書匯入＋備份加密＋閱讀週報／月報＋休息提醒＋書源倉庫（資產與健康增益包） |
 | Stage 11 | 成就徽章＋生詞本＋書籍分享卡＋閱讀時間軸＋閱讀挑戰（習慣養成與分享增益包） |
+| Stage 12 | 每書閱讀方案＋聽書微調＋溫故詞頻＋待讀清單＋讀速洞察（閱讀深耕與個人化增益包） |
 
 Stage 6 整合修正：`app/build.gradle.kts` 之 FileProvider authority 統一為
 `com.k.reader.filen`（與 Stage 5 `GoldenQuoteManager` 常數對齊）。Stage 7
@@ -163,6 +164,9 @@ Stage 10 續擴充關鍵檔清單（35→40 Kotlin 模組＋書源倉庫對話�
 `dailyWordCount()` 唯讀視窗（報表 CSV 字數欄）。Stage 11 續擴充關鍵檔清單（40→45 Kotlin
 模組＋徽章牆對話框布局）與繁中字串（485→545 鍵，只增不刪）；徽章／時
 間軸／挑戰三模組一律以 `ReadStatisticsManager` 為單源唯讀，不另記帳。
+Stage 12 續擴充關鍵檔清單（45→50 Kotlin 模組＋待讀清單對話框布局）與
+繁中字串（545→617 鍵，只增不刪），並為 `ReadingTimelineHelper` 增開
+`allSessions()` 唯讀視窗（讀速洞察字／分單源）。
 
 ## 授權
 

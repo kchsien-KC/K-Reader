@@ -639,4 +639,88 @@
     <string name="challenge_progress_fmt">%1$d / %2$d（%3$d%%）</string>
     <string name="challenge_done_fmt">挑戰達成！%1$s %2$d ✓</string>
     <string name="challenge_trophy_fmt">%1$s %2$s %3$d ✓</string>
+
+    <!-- ═══ Stage 12：閱讀深耕與個人化增益包（545→611 鍵，只增不刪） ═══ -->
+
+    <!-- 每書閱讀方案（ReadingProfileManager） -->
+    <string name="profile_title">本書閱讀方案</string>
+    <string name="profile_global">全域預設</string>
+    <string name="profile_override">覆寫本書</string>
+    <string name="profile_clear">還原跟隨全域</string>
+    <string name="profile_promote">套用到所有書</string>
+    <string name="profile_text_size">文字大小</string>
+    <string name="profile_line_spacing">行距倍數</string>
+    <string name="profile_margin">頁邊距</string>
+    <string name="profile_theme">背景主題</string>
+    <string name="profile_turn_anim">翻頁動畫</string>
+    <string name="profile_theme_white">紙白</string>
+    <string name="profile_theme_cream">米黃</string>
+    <string name="profile_theme_green">護眼綠</string>
+    <string name="profile_theme_black">夜黑</string>
+    <string name="profile_follow_global">跟隨全域</string>
+    <string name="profile_overrides_fmt">%1$d 項覆寫</string>
+    <string name="profile_cleared">已還原跟隨全域</string>
+    <string name="profile_promoted">已套用到所有書</string>
+
+    <!-- 聽書微調（TtsTuningHelper） -->
+    <string name="ttune_title">聽書微調</string>
+    <string name="ttune_rate">語速</string>
+    <string name="ttune_pause">段落停頓</string>
+    <string name="ttune_global">全域</string>
+    <string name="ttune_clear">還原跟隨全域</string>
+    <string name="ttune_sanitize">朗讀淨化</string>
+    <string name="ttune_rate_fmt">%1$d%%（%2$s）</string>
+    <string name="ttune_pause_fmt">%1$.1f 秒</string>
+    <string name="ttune_sanitize_fmt">朗讀淨化：剝除 %1$d 字（%2$d%%）</string>
+    <string name="ttune_sanitize_none">朗讀淨化：本段無需剝除</string>
+    <string name="ttune_cleared">已還原跟隨全域</string>
+    <string name="ttune_tag_book">此書</string>
+    <string name="ttune_tag_global">全域</string>
+
+    <!-- 溫故詞頻（WordFrequencyHelper） -->
+    <string name="freq_title">溫故詞像</string>
+    <string name="freq_review">生詞出現率</string>
+    <string name="freq_empty">本章沒有生詞簿裡的詞——繼續讀，快查後再回來看</string>
+    <string name="freq_stat">本章詞像</string>
+    <string name="freq_phrase">高頻片段</string>
+    <string name="freq_review_fmt">「%1$s」出現 %2$d 次</string>
+    <string name="freq_phrase_fmt">出現 %1$d 次——%2$s</string>
+    <string name="freq_stat_fmt">全文 %1$d 字・獨字比 %2$s</string>
+    <string name="freq_diff_hard">難（古文／密排）</string>
+    <string name="freq_diff_medium">中</string>
+    <string name="freq_diff_easy">易（流暢／爽文）</string>
+    <string name="freq_diff_none">無漢字內容</string>
+
+    <!-- 待讀清單（ReadingQueueManager＋dialog_queue.xml） -->
+    <string name="queue_title">待讀清單</string>
+    <string name="queue_add">加入待讀</string>
+    <string name="queue_added">已加入待讀清單</string>
+    <string name="queue_exists">這本書已在清單中</string>
+    <string name="queue_quota">待讀清單已達 200 本上限——先消化一下再收藏</string>
+    <string name="queue_empty">清單空白——瀏覽書源時把「想讀」的書收進來</string>
+    <string name="queue_abandon">放棄此書</string>
+    <string name="queue_clear_done">清理已讀</string>
+    <string name="queue_close">關閉</string>
+    <string name="queue_stale_title">想讀過期</string>
+    <string name="queue_stage_wish">想讀</string>
+    <string name="queue_stage_active">在讀</string>
+    <string name="queue_stage_done">已讀</string>
+    <string name="queue_stage_abandoned">已放棄</string>
+    <string name="queue_section_fmt">%1$s（%2$d）</string>
+    <string name="queue_entry_fmt">《%1$s》・%2$s</string>
+    <string name="queue_entry_no_author_fmt">《%1$s》</string>
+    <string name="queue_stale_fmt">《%1$s》——%2$d 天前就想讀了</string>
+    <string name="queue_summary_fmt">想讀 %1$d・在讀 %2$d・已讀 %3$d</string>
+    <string name="queue_summary_zero">想讀 0・在讀 0・已讀 0</string>
+
+    <!-- 讀速洞察（ReadingPaceHelper） -->
+    <string name="pace_title">讀速洞察</string>
+    <string name="pace_board">快慢榜</string>
+    <string name="pace_trend">讀速趨勢</string>
+    <string name="pace_empty">還沒有足夠的閱讀紀錄——多讀幾天再來看</string>
+    <string name="pace_fastest">讀得最快</string>
+    <string name="pace_slowest">讀得最慢</string>
+    <string name="pace_average_fmt">全庫平均 %1$d 字／分</string>
+    <string name="pace_book_fmt">《%1$s》%2$d 字／分</string>
+    <string name="pace_trend_fmt">近 7 日 %1$d vs 前 7 日 %2$d 字／分（%3$d%%）</string>
 </resources>

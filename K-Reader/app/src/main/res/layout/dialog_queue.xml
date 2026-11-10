@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════════
+   K.閱讀 v1.2 — 待讀清單對話框（Stage 12）
+  ═══════════════════════════════════════════════════════════════
+   整合方式：設定頁「待讀清單」→ 載入本對話框 →
+   ReadingQueueManager.sections() 餵三分組（想讀／在讀／
+   已讀）；過期提醒列由 staleWishes() 逐條渲染；
+   放棄／移除動作由適配器以程式碼掛（零額外 item 檔案）。
+
+   節點職責：
+    · tv_queue_summary    頂部摘要行（queue_summary_fmt：
+                          「想讀 12・在讀 3・已讀 5」）
+    · tv_queue_stale      過期提醒（想讀滿 N 天未開卷——
+                          staleWishes() 空時由程式碼 gone）
+    · tv_queue_empty      空狀態提示（無清單時顯示）
+    · rv_queue_list       三分組清單（列布局由適配器以程式
+                          碼組建——體積紀律）
+    · btn_queue_clear_done 已讀清理鈕（外框風格）
+    · btn_queue_close     關閉（外框風格鈕）
+
+   設計紀律：
+    · 純主題屬性著色（colorPrimary／textColorSecondary），
+      日夜間自動適配
+    · 零點陣圖、零額外 drawable 檔案（體積紀律）
+    · RTL 友善（marginStart/End＋paddingStart/End）
+    · 與 dialog_badges／dialog_source_repo 同款視覺語言
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- 頂部摘要行：想讀 N・在讀 N・已讀 N -->
+    <TextView
+        android:id="@+id/tv_queue_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/queue_summary_zero"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- 過期提醒（閒置時 gone——零干擾） -->
+    <TextView
+        android:id="@+id/tv_queue_stale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="@string/queue_stale_title"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <!-- 空狀態提示 -->
+    <TextView
+        android:id="@+id/tv_queue_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:text="@string/queue_empty"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <!-- 三分組清單（列布局由適配器組建——程式碼，體積紀律） -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_queue_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:minHeight="240dp"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="ifContentScrolls" />
+
+    <!-- 已讀清理鈕（外框風格） -->
+    <Button
+        android:id="@+id/btn_queue_clear_done"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/queue_clear_done" />
+
+    <!-- 關閉鈕（外框風格） -->
+    <Button
+        android:id="@+id/btn_queue_close"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/queue_close" />
+
+</LinearLayout>

@@ -165,6 +165,9 @@ object ReadingTimelineHelper {
     /** 帳冊檔（供備份層只拷檔不解析） */
     fun timelineFile(): File = File(AppContext.ctx.filesDir, BOOK_FILE)
 
+    /** 全部原始筆（唯讀視窗——Stage 12 讀速洞察以時間軸為單源） */
+    fun allSessions(): List<TimelineEntry> = load().toList()
+
     /** 清倉（設定頁「清空時間軸」）：回傳清除筆數 */
     fun clearAll(): Int {
         val n = load().size
