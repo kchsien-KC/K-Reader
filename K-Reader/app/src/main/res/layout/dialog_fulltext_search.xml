@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════════
+   K.閱讀 v1.2 — 書內全文搜尋對話框（Stage 8）
+  ═══════════════════════════════════════════════════════════════
+   整合方式：閱讀頁選單 fulltext_search_title → 載入本對話框 →
+   FullTextSearchHelper.searchInBook()——進度列即時餵
+   fulltext_searching，結果區章名＋摘錄直出，點選跳章。
+
+   節點職責：
+    · til_fulltext_keyword  關鍵字輸入容器（Material OutlinedBox）
+    · et_fulltext_keyword   關鍵字輸入欄（單行、64 字上限）
+    · cb_fulltext_regex     正則模式開關（純文字↔正則二擇一）
+    · row_fulltext_status   搜尋中狀態列（ProgressBar＋章進度，gone）
+    · sv_fulltext_result    結果捲動容器（多筆摘錄不撐爆）
+    · tv_fulltext_result    結果文字（章名＋摘錄分區）
+    · btn_fulltext_search   搜尋全書（實心主色鈕）
+
+   設計紀律：
+    · 純主題屬性著色（colorPrimary／colorOnPrimary／
+      textColorSecondary），日夜間自動適配
+    · 零點陣圖、零額外 drawable 檔案（體積紀律）
+    · RTL 友善（marginStart/End＋paddingStart/End）
+    · 與 dialog_dict_lookup.xml 同款視覺語言（對話框家族）
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- 關鍵字輸入容器 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_fulltext_keyword"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:hint="@string/fulltext_keyword_hint"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="64">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_fulltext_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="15sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 正則模式開關 -->
+    <CheckBox
+        android:id="@+id/cb_fulltext_regex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:minHeight="40dp"
+        android:text="@string/fulltext_regex_switch"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="14sp" />
+
+    <!-- 搜尋中狀態列（預設 gone——結果回填時隱藏） -->
+    <LinearLayout
+        android:id="@+id/row_fulltext_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/tv_fulltext_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fulltext_searching_zero"
+            android:textColor="?attr/textColorSecondary"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- 結果捲動容器（多筆摘錄不撐爆） -->
+    <ScrollView
+        android:id="@+id/sv_fulltext_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxHeight="320dp"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:id="@+id/tv_fulltext_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.4"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp" />
+    </ScrollView>
+
+    <!-- 動作列：搜尋全書（實心主色鈕） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_fulltext_search"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/colorPrimary"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/fulltext_search_btn"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

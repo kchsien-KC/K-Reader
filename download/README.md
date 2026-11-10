@@ -1,6 +1,6 @@
 # K.閱讀 v1.2 旗艦純淨版 — 階段交付檔清單
 
-以純淨開源「閱讀（Legado 3.0）」架構為起點，七階段逐段交付（Stage 1~6 原規劃＋Stage 7 旗艦增益包）。
+以純淨開源「閱讀（Legado 3.0）」架構為起點，八階段逐段交付（Stage 1~6 原規劃＋Stage 7／8 兩包旗艦增益）。
 套名為 Stage 6 `init_k_reader.sh` 重構後之 `com.k.reader`（applicationId：`com.k.reader`）。
 
 ## Stage 1 — 專案識別與編譯配置（已完成）
@@ -94,6 +94,23 @@
 
 壓縮包：`K_Reader_Stage7_files.zip`（10 檔，路徑即 Legado 3.0 樹落點；`strings.xml`／`init_k_reader.sh`／`README.md` 為整合修正版，套用時覆蓋前階段版本）。
 
+## Stage 8 — 書內全文搜尋＋劃線筆記本＋閱讀目標＋定時日夜切換＋書架整理（已完成）
+
+| 檔案 | 行數 | 說明 |
+| --- | --- | --- |
+| `app/src/main/java/com/k/reader/help/search/FullTextSearchHelper.kt` | 259 | 書內全文搜尋：章節內容注入介面（ContentLoader——不綁資料庫，無快取章節自動跳過）；雙針簡繁並搜（原關鍵字＋繁化關鍵字同時在原文上定位，位置零漂移）；純文字／正則雙模式（PatternSyntaxException 容錯＋正則預編譯 ConcurrentHashMap 快取）；前後各 20 字摘錄；300 筆上限護欄滿額即停；onProgress 每章進度回報（IO 執行緒） |
+| `app/src/main/java/com/k/reader/help/note/HighlightNoteManager.kt` | 292 | 劃線筆記本：章內字元範圍＋內容快照＋三色分類（金句黃／疑問藍／重點紅）＋批註；金句卡直達（委託 GoldenQuoteManager——裱卡不必重選字）；Markdown（# 書名/## 章節/> 劃線）／純文字雙匯出，MediaStore 落 Downloads/KReader/；全簿 500 條容量最舊淘汰 |
+| `app/src/main/java/com/k/reader/help/goal/ReadingGoalManager.kt` | 300 | 閱讀目標與提醒：分鐘／字數二擇一目標（0=停用）；進度直讀 ReadStatisticsManager.summaryToday（數據單源不另記帳）；streak 連續天數（今天沒讀不歸零）＋最長紀錄跨啟動持久化；達成通知（同日一次）＋晚間提醒（21:00 預設可調、整點比對）；NotificationChannel 可整類關閉，零後台服務 |
+| `app/src/main/java/com/k/reader/help/config/DayNightScheduleHelper.kt` | 217 | 定時日夜切換：三模式（停用／固定時刻 20:00→06:00 可調／日出日落緯度概算——月份餘弦內插零定位權限，與色溫日落估算同族）；pollThemeChange 形態翻轉偵測（翻頁時分鐘級檢查，翻轉才 recreate）；墨水屏互斥一律日間；套用形態跨啟動還原 |
+| `app/src/main/java/com/k/reader/help/shelf/ShelfOrganizeHelper.kt` | 224 | 書架整理助手：三桶體檢（完本／連載在讀／冷凍——30 天未翻頁預設可調）；五鍵排序（最近閱讀/加入時間/書名/作者）純函式零副作用；冷凍一鍵歸檔（群組編號冪等確保、避開既有分組）；Book 欄位寬容取樣（髒欄位不炸體檢） |
+| `app/src/main/res/layout/dialog_fulltext_search.xml` | 137 | 全文搜尋對話框：Material TextInputLayout 關鍵字欄（64 字計數）＋正則開關＋fulltext_searching_zero 狀態列（預設 gone）＋320dp 捲動結果區＋搜尋全書實心鈕；純主題屬性、RTL 友善 |
+| `app/src/main/res/layout/dialog_note_editor.xml` | 153 | 劃線筆記編輯對話框：劃線內容捲動預填＋批註多行輸入＋三色 RadioGroup 單選＋儲存（實心）／生成金句卡（外框）雙動作；與 AI 助手／字詞快查同款視覺語言 |
+| `app/src/main/res/values-zh-rTW/strings.xml`（更新版） | 410 | Stage 8 新增 59 鍵（286→345，只增不刪）：全文搜尋 14 鍵＋劃線筆記 13 鍵＋閱讀目標 13 鍵＋日夜切換 6 鍵＋書架整理 13 鍵；套用時覆蓋 Stage 7 版本（init 腳本「只增不刪」合併自動吸納上游既有鍵） |
+| `init_k_reader.sh`（整合修正版） | 347 | Stage 8 擴充：關鍵檔清單納入五個新 Kotlin 模組（30 檔驗證）＋「八階段」字樣同步；套用時覆蓋 Stage 7 版本 |
+| `README.md`（整合修正版） | 152 | Stage 8 收錄：旗艦功能一覽 25 領域（＋檢索/筆記/習慣/主題/書架維運）、30 Kotlin 模組／345 鍵結構樹、八階段交付對照；套用時覆蓋 Stage 7 版本 |
+
+壓縮包：`K_Reader_Stage8_files.zip`（10 檔，路徑即 Legado 3.0 樹落點；`strings.xml`／`init_k_reader.sh`／`README.md` 為整合修正版，套用時覆蓋前階段版本）。
+
 ## 交付完結
 
-七階段全數交付完成（Stage 1~6 原規劃＋Stage 7 旗艦增益包）。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。
+八階段全數交付完成（Stage 1~6 原規劃＋Stage 7／8 兩包旗艦增益）。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。

@@ -338,4 +338,73 @@
     <string name="dict_not_found">查無此詞</string>
     <string name="dict_copy_definition">複製釋義</string>
     <string name="dict_open_in_browser">以瀏覽器開啟</string>
+
+    <!-- ═══════════ Stage 8：書內全文搜尋 ═══════════ -->
+    <string name="fulltext_search_title">書內全文搜尋</string>
+    <string name="fulltext_keyword_hint">輸入關鍵字…</string>
+    <string name="fulltext_regex_switch">以正則表達式搜尋</string>
+    <string name="fulltext_searching_zero">搜尋中…</string>
+    <string name="fulltext_searching">搜尋中…%1$d/%2$d 章</string>
+    <string name="fulltext_regex_invalid">正則表達式格式錯誤</string>
+    <string name="fulltext_no_result">全書查無「%1$s」</string>
+    <string name="fulltext_result_count">共 %1$d 筆結果</string>
+    <string name="fulltext_result_limit">已達 %1$d 筆上限，僅顯示前筆數</string>
+    <string name="fulltext_jump_hint">點選結果跳至該章</string>
+    <string name="fulltext_search_btn">搜尋全書</string>
+    <string name="fulltext_chapter_fmt">第 %1$d 章</string>
+    <string name="fulltext_mode_plain">純文字</string>
+    <string name="fulltext_mode_regex">正則表達式</string>
+
+    <!-- ═══════════ Stage 8：劃線筆記本 ═══════════ -->
+    <string name="note_title">劃線筆記本</string>
+    <string name="note_edit_hint">寫點想法…</string>
+    <string name="note_color_quote">金句黃</string>
+    <string name="note_color_question">疑問藍</string>
+    <string name="note_color_key">重點紅</string>
+    <string name="note_save">儲存筆記</string>
+    <string name="note_to_quote">生成金句卡</string>
+    <string name="note_export_md">匯出 Markdown</string>
+    <string name="note_export_plain">匯出純文字</string>
+    <string name="note_export_done">已匯出 %1$s</string>
+    <string name="note_empty_hint">長按選取文字即可劃線</string>
+    <string name="note_add_success">已加入劃線</string>
+    <string name="note_quote_done">已生成金句卡</string>
+
+    <!-- ═══════════ Stage 8：閱讀目標與提醒 ═══════════ -->
+    <string name="goal_title">每日閱讀目標</string>
+    <string name="goal_type_minutes">每日分鐘數</string>
+    <string name="goal_type_words">每日字數</string>
+    <string name="goal_progress_fmt">今日 %1$s／目標 %2$s</string>
+    <string name="goal_disabled">已停用</string>
+    <string name="goal_streak_fmt">連續閱讀 %1$d 天</string>
+    <string name="goal_best_streak_fmt">最長連續 %1$d 天</string>
+    <string name="goal_achieved_title">目標達成</string>
+    <string name="goal_achieved">今日已閱讀 %1$s，目標達成</string>
+    <string name="goal_reminder_title">閱讀時間到</string>
+    <string name="goal_reminder_text">今天還沒達成 %1$s 的閱讀目標，翻開書頁吧</string>
+    <string name="goal_reminder_hour_fmt">每天 %1$s 提醒</string>
+    <string name="goal_channel_name">閱讀提醒</string>
+
+    <!-- ═══════════ Stage 8：定時日夜切換 ═══════════ -->
+    <string name="daynight_title">定時日夜切換</string>
+    <string name="daynight_mode_off">停用</string>
+    <string name="daynight_mode_fixed">固定時刻</string>
+    <string name="daynight_mode_solar">日出日落自動</string>
+    <string name="daynight_dark_at">%1$s 起進入夜間</string>
+    <string name="daynight_solar_summary">日出 %1$s・日落 %2$s 自動切換</string>
+
+    <!-- ═══════════ Stage 8：書架整理助手 ═══════════ -->
+    <string name="shelf_organize_title">書架整理助手</string>
+    <string name="shelf_sort_recent">最近閱讀</string>
+    <string name="shelf_sort_added">加入時間</string>
+    <string name="shelf_sort_name">書名</string>
+    <string name="shelf_sort_author">作者</string>
+    <string name="shelf_group_finished">完本</string>
+    <string name="shelf_group_serial">連載中</string>
+    <string name="shelf_group_dormant">冷凍庫</string>
+    <string name="shelf_dormant_days_fmt">%1$d 天未讀</string>
+    <string name="shelf_dormant_hint">偵測到 %1$d 本超過 %2$d 天未閱讀的書</string>
+    <string name="shelf_archive_confirm">將 %1$d 本書移入冷凍庫？</string>
+    <string name="shelf_archive_done">已歸檔 %1$d 本書</string>
+    <string name="shelf_suggestion_none">書架井然有序，無需整理</string>
 </resources>
