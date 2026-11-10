@@ -8,7 +8,7 @@
 
 ---
 
-## 旗艦功能一覽（十二階段交付）
+## 旗艦功能一覽（十三階段交付）
 
 | 領域 | 功能 |
 | --- | --- |
@@ -47,6 +47,11 @@
 | 成長報表 | 閱讀週報／月報（滾動 7／30 天彙整＋CSV（UTF-8 BOM）＋1080×1350 青黛報表卡分享） |
 | 護體 | 休息提醒（連續閱讀 20～120 分鐘門檻＋再讀 10 分鐘延後；夜間靜默；墨水屏不震動） |
 | 書源維運 | 書源倉庫訂閱（SHA-256 內容指紋版本比對＋一鍵全庫更新；三件套護航） |
+| 年度回顧 | 閱讀年報（滾動 365 天六方彚整＋36 寬純文字卡；剪貼簿主路＋分享輔路） |
+| 資料自主 | 資料匯出中心（統計／金句／生詞／筆記／挑戰／徽章六節 Markdown 報告；2M 保險絲） |
+| 換機 | 搬家包（KRM1 自描述格式；13 帳冊白名單打包；還原前自動備份） |
+| 書架標籤 | 書籍標籤（8 色票／12 字名／單書 3 標籤／全庫 30 個上限；懸空標記自隱） |
+| 資料健檢 | 帳冊體檢（JSON 可解析性掃描＋損毀隔離 .corrupt 保留現場＋體積彙總 B／KB／MB） |
 
 ## 與原版「閱讀」完全隔離
 
@@ -71,7 +76,7 @@ WebDAV 備份端點、你設定的 AI 端點。無任何背景資料回報。
 ```
 
 腳本執行八大步驟（冪等可重跑）：套名重構 `io.legado.app → com.k.reader`、
-產生根專案檔、疊加十階段交付檔、繁中字串「只增不刪」合併、FileProvider
+產生根專案檔、疊加十三階段交付檔、繁中字串「只增不刪」合併、FileProvider
 authority 統一、mipmap 點陣圖清剿（零點陣圖規範）、Gradle Wrapper 對齊 8.7、
 完整性驗證。`--help` 可看完整說明。
 
@@ -133,11 +138,11 @@ git tag v1.2 && git push origin main --tags
     ├── build.gradle.kts            # applicationId／簽章／依賴（Stage 1）
     ├── proguard-rules.pro          # R8 keep 規則（Stage 1）
     └── src/main/
-        ├── java/com/k/reader/…     # 40 個 Kotlin 模組（Stage 2~5、7~10）
-        └── res/                    # 圖示／布局／485 鍵繁中字串（Stage 1~5、7~10）
+        ├── java/com/k/reader/…     # 55 個 Kotlin 模組（Stage 2~13）
+        └── res/                    # 圖示／布局／680 鍵繁中字串（Stage 1~13）
 ```
 
-## 十二階段交付對照
+## 十三階段交付對照
 
 | 階段 | 範圍 |
 | --- | --- |
@@ -153,6 +158,7 @@ git tag v1.2 && git push origin main --tags
 | Stage 10 | 本地書匯入＋備份加密＋閱讀週報／月報＋休息提醒＋書源倉庫（資產與健康增益包） |
 | Stage 11 | 成就徽章＋生詞本＋書籍分享卡＋閱讀時間軸＋閱讀挑戰（習慣養成與分享增益包） |
 | Stage 12 | 每書閱讀方案＋聽書微調＋溫故詞頻＋待讀清單＋讀速洞察（閱讀深耕與個人化增益包） |
+| Stage 13 | 閱讀年報＋資料匯出中心＋搬家包＋書籍標籤＋資料健檢（閱讀資料自主與年度回顧增益包） |
 
 Stage 6 整合修正：`app/build.gradle.kts` 之 FileProvider authority 統一為
 `com.k.reader.filen`（與 Stage 5 `GoldenQuoteManager` 常數對齊）。Stage 7
@@ -166,7 +172,10 @@ Stage 10 續擴充關鍵檔清單（35→40 Kotlin 模組＋書源倉庫對話�
 間軸／挑戰三模組一律以 `ReadStatisticsManager` 為單源唯讀，不另記帳。
 Stage 12 續擴充關鍵檔清單（45→50 Kotlin 模組＋待讀清單對話框布局）與
 繁中字串（545→617 鍵，只增不刪），並為 `ReadingTimelineHelper` 增開
-`allSessions()` 唯讀視窗（讀速洞察字／分單源）。
+`allSessions()` 唯讀視窗（讀速洞察字／分單源）。Stage 13 續擴充關鍵檔
+清單（50→55 Kotlin 模組＋年報對話框布局）與繁中字串（617→680 鍵，只增
+不刪），並新增 `DeviceMigrationHelper.LEDGER_FILES` 帳冊登記處（搬家／
+匯出／健檢三模組共用的單一事實來源）與 `book_tags.json` 新帳冊。
 
 ## 授權
 
