@@ -76,8 +76,9 @@ WebDAV 備份端點、你設定的 AI 端點。無任何背景資料回報。
 ```
 
 腳本執行八大步驟（冪等可重跑）：套名重構 `io.legado.app → com.k.reader`、
-產生根專案檔、疊加十三階段交付檔、繁中字串「只增不刪」合併、FileProvider
-authority 統一、mipmap 點陣圖清剿（零點陣圖規範）、Gradle Wrapper 對齊 8.7、
+根專案檔品牌化（保留上游版本目錄鎖定＋退場 firebase）、疊加十三階段交付檔、
+繁中字串「只增不刪」合併、FileProvider
+authority 統一、mipmap 點陣圖清剿（零點陣圖規範）、Gradle Wrapper 對齊 8.11.1、
 完整性驗證。`--help` 可看完整說明。
 
 ### 二、本地編譯
@@ -118,10 +119,10 @@ git tag v1.2 && git push origin main --tags
 | 項目 | 版本 |
 | --- | --- |
 | JDK | 17（temurin 相容） |
-| Gradle | 8.7+（轉換腳本自動對齊 wrapper） |
-| Android Gradle Plugin | 8.5.2 |
-| Kotlin | 1.9.24 |
-| compileSdk / targetSdk | 34（minSdk 23） |
+| Gradle | 8.11.1（轉換腳本自動對齊 wrapper） |
+| Android Gradle Plugin | 8.10.1（上游版本目錄鎖定） |
+| Kotlin | 2.2.0（KSP；kapt 已退役） |
+| compileSdk / targetSdk | 35（minSdk 23） |
 | ABI | 僅 arm64-v8a（單一通用 APK） |
 
 體積與效能底線：安裝檔 < 15MB、冷啟動 < 0.5s——R8 full mode＋資源收縮＋

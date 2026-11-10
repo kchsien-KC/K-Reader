@@ -110,7 +110,8 @@ jobs:
         run: |
           set -euo pipefail
           VER="${{ steps.ver.outputs.name }}"
-          cp app/build/outputs/apk/release/app-release.apk "K_Reader_v${VER}.apk"
+          # flavor「app」架構：產物位於 apk/app/release/（app-app-release.apk）
+          cp app/build/outputs/apk/app/release/app-app-release.apk "K_Reader_v${VER}.apk"
           sha256sum "K_Reader_v${VER}.apk" > "K_Reader_v${VER}.apk.sha256"
           ls -lh K_Reader_v*.apk*
 

@@ -3,3 +3,5 @@ node_modules/
 .env
 upload/
 *.bundle
+legado_src/
+full-tree/

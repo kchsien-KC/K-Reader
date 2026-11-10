@@ -8,12 +8,13 @@
 #
 #  執行八大步驟：
 #    1. 套名重構   io.legado.app → com.k.reader（目錄搬移＋全樹文字改寫）
-#    2. 根專案檔   產出 settings.gradle.kts / 根 build.gradle.kts
+#    2. 根專案檔 保留上游 root build／settings（catalog 版本鎖定）＋改 rootProject.name；
+#                  退場 firebase google-services（零統計 SDK 純淨紀律）
 #    3. 疊加層落地 app 模組建置腳本＋十三階段全部 Kotlin／資源檔
 #    4. 字串合併   values-zh-rTW/strings.xml「只增不刪」合併（保留上游既有鍵）
 #    5. 授權統一   FileProvider authority 統一為 com.k.reader.filen
 #    6. 圖示純淨化 刪除上游 mipmap 點陣圖殘留（貫徹零點陣圖規範）
-#    7. 對齊工具鏈 Gradle Wrapper → 8.7（AGP 8.5.x / Kotlin 1.9.24 / JDK 17）
+#    7. 對齊工具鏈 Gradle Wrapper → 8.11.1（AGP 8.10.1 / Kotlin 2.2.0 / JDK 17）
 #    8. 完整性驗證 殘留引用歸零＋十三階段關鍵檔到齊
 #
 #  用法：
@@ -175,41 +176,23 @@ else
     good "目錄搬移：${legacy_count} 個 source set → com/k/reader/"
 fi
 
-# ═════════════════ 2. 根專案檔產出 ═════════════════
-step "2/8 產出根專案檔（settings.gradle.kts / build.gradle.kts）"
+# ═════════════════ 2. 根專案檔（保留上游＋品牌化＋firebase 退場） ═════════════════
+step "2/8 根專案檔（保留上游 catalog 版本鎖定；rootProject.name → KReader）"
 
-cat > "$T/settings.gradle.kts" <<'EOF'
-// K.閱讀 v1.2 — 根專案設定（init_k_reader.sh 產出）
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven("https://jitpack.io")
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://jitpack.io")
-    }
-}
-rootProject.name = "KReader"
-include(":app")
-EOF
+# 2025-12 Legado 基準樹自帶 settings.gradle／build.gradle／gradle/libs.versions.toml
+# 版本目錄（AGP 8.10.1／Kotlin 2.2.0／KSP／room 全鎖定）——重用上游檔案
+# 而非重新產出模板，避免兩套工具鏈漂移；僅改品牌名與退場 firebase。
+for root_file in "settings.gradle" "build.gradle" "gradle/libs.versions.toml" \
+                 "gradle/wrapper/gradle-wrapper.properties"; do
+    [ -f "$T/$root_file" ] || die "目標樹缺少上游根專案檔：$root_file（非 Legado 基準樹？）"
+done
+sed -i "s|rootProject.name = 'legado'|rootProject.name = 'KReader'|" "$T/settings.gradle"
+good "rootProject.name → KReader（catalog／模組 include 全數保留）"
 
-cat > "$T/build.gradle.kts" <<'EOF'
-// K.閱讀 v1.2 — 根專案（init_k_reader.sh 產出）
-// 工具鏈：Gradle 8.7+ / AGP 8.5.x / Kotlin 1.9.24 / JDK 17
-plugins {
-    id("com.android.application") version "8.5.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
-    id("org.jetbrains.kotlin.kapt") version "1.9.24" apply false
-}
-EOF
-good "根專案檔已產出（rootProject.name = KReader，模組 :app）"
+# firebase 退場：google-services.json 移除（疊層建置腳本已不含 google-services
+# 插件與 firebase 依賴）
+rm -f "$T/app/google-services.json"
+good "firebase google-services 已退場（零統計 SDK 純淨紀律）"
 
 # ═════════════════ 3. 疊加層落地 ═════════════════
 step "3/8 疊加層落地（十三階段交付檔）"
@@ -227,6 +210,10 @@ if [ -f "$STRINGS_DEST" ]; then
     STRINGS_STASH="$(mktemp)"
     cp "$STRINGS_DEST" "$STRINGS_STASH"
 fi
+
+# 疊加前先移除上游 app 模組之 Groovy 建置檔（避免與本疊層
+# build.gradle.kts 同時存在——Gradle 拒絕雙建置檔模組）
+rm -f "$T/app/build.gradle"
 
 rm -rf "$T/.github"          # 移除上游工作流，換用 K.閱讀雲端編譯流程
 cp -a "$OVERLAY_DIR/app/." "$T/app/"
@@ -305,13 +292,13 @@ else
     good "無點陣圖殘留"
 fi
 
-# ═════════════════ 7. Gradle Wrapper 對齊 8.7 ═════════════════
-step "7/8 Gradle Wrapper 對齊 8.7"
+# ═════════════════ 7. Gradle Wrapper 對齊 8.11.1 ═════════════════
+step "7/8 Gradle Wrapper 對齊 8.11.1（2025-12 基準樹）"
 
 wrapper_props="$T/gradle/wrapper/gradle-wrapper.properties"
 if [ -f "$wrapper_props" ]; then
-    sed -i -E 's#^distributionUrl=.*#distributionUrl=https\\://services.gradle.org/distributions/gradle-8.7-bin.zip#' "$wrapper_props"
-    good "distributionUrl → gradle-8.7-bin.zip"
+    sed -i -E 's#^distributionUrl=.*#distributionUrl=https\\://services.gradle.org/distributions/gradle-8.11.1-bin.zip#' "$wrapper_props"
+    good "distributionUrl → gradle-8.11.1-bin.zip"
 else
     warn "缺少 gradle/wrapper/gradle-wrapper.properties——請手動執行 gradle wrapper"
 fi
@@ -351,10 +338,20 @@ else
     FAIL=1
 fi
 
-grep -q 'include(":app")' "$T/settings.gradle.kts" \
-    || { printf '  %s✘%s settings.gradle.kts 未包含 :app 模組\n' "$C_BAD" "$C_OFF"; FAIL=1; }
+grep -q "include ':app'" "$T/settings.gradle" \
+    || { printf '  %s✘%s settings.gradle 未包含 :app 模組\n' "$C_BAD" "$C_OFF"; FAIL=1; }
+grep -q "include ':modules:book'" "$T/settings.gradle" \
+    || { printf '  %s✘%s settings.gradle 未包含 :modules:book 子專案\n' "$C_BAD" "$C_OFF"; FAIL=1; }
+grep -q "include ':modules:rhino'" "$T/settings.gradle" \
+    || { printf '  %s✘%s settings.gradle 未包含 :modules:rhino 子專案\n' "$C_BAD" "$C_OFF"; FAIL=1; }
 grep -q 'com.k.reader.filen' "$T/app/build.gradle.kts" \
     || { printf '  %s✘%s app/build.gradle.kts 缺少 filen 授權設定\n' "$C_BAD" "$C_OFF"; FAIL=1; }
+[ -f "$T/app/proguard-kreader.pro" ] \
+    || { printf '  %s✘%s 缺少 proguard-kreader.pro（55 模組 keep 規則）\n' "$C_BAD" "$C_OFF"; FAIL=1; }
+[ ! -e "$T/app/build.gradle" ] \
+    || { printf '  %s✘%s 上游 Groovy 建置檔仍在（雙建置檔衝突）\n' "$C_BAD" "$C_OFF"; FAIL=1; }
+[ ! -e "$T/app/google-services.json" ] \
+    || { printf '  %s✘%s firebase 殘留未清\n' "$C_BAD" "$C_OFF"; FAIL=1; }
 [ -f "$T/README.md" ] || { printf '  %s✘%s 缺少 README.md\n' "$C_BAD" "$C_OFF"; FAIL=1; }
 [ ! -e "$T/app/src/main/java/io" ] \
     || { printf '  %s✘%s io/ 舊目錄仍存在\n' "$C_BAD" "$C_OFF"; FAIL=1; }
