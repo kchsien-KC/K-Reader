@@ -1,0 +1,140 @@
+# ═══════════════════════════════════════════════════════════════════
+#  K.閱讀 v1.2 旗艦純淨版 — Tag 觸發雲端編譯工作流
+# ═══════════════════════════════════════════════════════════════════
+#  觸發：推送 Git Tag（v*，如 v1.2 / v1.2.1）或手動 workflow_dispatch
+#  產出：K_Reader_v<版本>.apk（＋ .sha256 校驗檔）→ 建置產物 ＋ GitHub Release
+#
+#  簽章：
+#   · 設定 Secrets：KREADER_KEYSTORE_BASE64 / KREADER_KEYSTORE_PASSWORD /
+#     KREADER_KEY_ALIAS / KREADER_KEY_PASSWORD → 以正式金鑰簽署發佈
+#   · 未設定 → 自動退回 debug 簽章（app/build.gradle.kts 內建回退，
+#     僅供自用安裝，不可覆蓋安裝正式簽章版本）
+#
+#  版本規則（與 app/build.gradle.kts 之 -PK_VERSION_NAME／-PK_VERSION_CODE 對齊）：
+#   · v1.2   → versionName 1.2   / versionCode 10200
+#   · v1.2.1 → versionName 1.2.1 / versionCode 10201
+#   · 非 Tag 執行（手動／分支）→ 預設 1.2 / 10200
+# ═══════════════════════════════════════════════════════════════════
+name: 雲端編譯
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kreader-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: 建置 K.閱讀發行 APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: 檢出原始碼
+        uses: actions/checkout@v4
+
+      - name: 設定 JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: 設定 Gradle（含建置快取）
+        uses: gradle/actions/setup-gradle@v3
+
+      # 防呆：本倉庫應收錄「已完成套名重構的完整樹」。若偵測到未轉換的
+      # Legado 樹（io/legado/app 仍在），明確失敗並指引正確流程，
+      # 而非在 CI 內對合併樹做不可逆轉換（字串合併等保障將不成立）
+      - name: 防呆檢查（偵測未經套名重構的 Legado 樹）
+        if: hashFiles('app/src/main/java/io/legado/app/**') != ''
+        run: |
+          echo "::error::偵測到未經套名重構的 Legado 樹（app/src/main/java/io/legado/app 仍存在）"
+          echo "請先在本機對一份純淨的 Legado 3.0 樹執行 ./init_k_reader.sh <legado-tree>，"
+          echo "再將轉換後的完整樹推送至本倉庫——詳見 README.md〈快速開始〉。"
+          exit 1
+
+      - name: 注入發佈簽章（無 Secrets 時退回 debug 簽章）
+        env:
+          KSTORE_BASE64: ${{ secrets.KREADER_KEYSTORE_BASE64 }}
+          KSTORE_PASSWORD: ${{ secrets.KREADER_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KREADER_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KREADER_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "${KSTORE_BASE64}" ]; then
+            echo "::warning::未設定 KREADER_KEYSTORE_* Secrets——本輪以 debug 簽章產出（僅供自用安裝）"
+            exit 0
+          fi
+          printf '%s' "${KSTORE_BASE64}" | base64 -d > release.jks
+          {
+            echo "storeFile=release.jks"
+            echo "storePassword=${KSTORE_PASSWORD}"
+            echo "keyAlias=${KEY_ALIAS}"
+            echo "keyPassword=${KEY_PASSWORD}"
+          } > keystore.properties
+          echo "已注入發佈簽章（release.jks＋keystore.properties）"
+
+      - name: 解析版本（Git Tag → versionName／versionCode）
+        id: ver
+        run: |
+          set -euo pipefail
+          REF="${GITHUB_REF_NAME}"
+          if [[ "${REF}" =~ ^v?([0-9]+)\.([0-9]+)(\.([0-9]+))?$ ]]; then
+            MAJOR="${BASH_REMATCH[1]}"
+            MINOR="${BASH_REMATCH[2]}"
+            PATCH="${BASH_REMATCH[4]:-0}"
+            NAME="${REF#v}"
+            CODE="$(( MAJOR * 10000 + MINOR * 100 + PATCH ))"
+          else
+            NAME="1.2"
+            CODE="10200"
+          fi
+          echo "name=${NAME}" >> "${GITHUB_OUTPUT}"
+          echo "code=${CODE}" >> "${GITHUB_OUTPUT}"
+          echo "版本：v${NAME}（versionCode ${CODE}）"
+
+      - name: 編譯發行 APK（R8 full mode）
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease --no-daemon --stacktrace \
+            -PK_VERSION_NAME="${{ steps.ver.outputs.name }}" \
+            -PK_VERSION_CODE="${{ steps.ver.outputs.code }}"
+
+      - name: 產出 K_Reader_vX.Y.apk ＋ SHA-256 校驗檔
+        run: |
+          set -euo pipefail
+          VER="${{ steps.ver.outputs.name }}"
+          cp app/build/outputs/apk/release/app-release.apk "K_Reader_v${VER}.apk"
+          sha256sum "K_Reader_v${VER}.apk" > "K_Reader_v${VER}.apk.sha256"
+          ls -lh K_Reader_v*.apk*
+
+      - name: 上傳建置產物
+        uses: actions/upload-artifact@v4
+        with:
+          name: K_Reader_v${{ steps.ver.outputs.name }}
+          path: K_Reader_v*.apk*
+          if-no-files-found: error
+
+      - name: 發佈 GitHub Release（僅 Tag 觸發）
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: K.閱讀 v${{ steps.ver.outputs.name }} 旗艦純淨版
+          fail_on_unmatched_files: true
+          body: |
+            K.閱讀 v${{ steps.ver.outputs.name }} 旗艦純淨版
+
+            - 版本：v${{ steps.ver.outputs.name }}（versionCode ${{ steps.ver.outputs.code }}）
+            - 建置：${{ github.sha }}
+            - 零統計 SDK · 零廣告 · 零遙測 · GPL-3.0
+
+            安裝前請以隨附之 ``K_Reader_v${{ steps.ver.outputs.name }}.apk.sha256`` 校驗檔案完整性。
+          files: |
+            K_Reader_v${{ steps.ver.outputs.name }}.apk
+            K_Reader_v${{ steps.ver.outputs.name }}.apk.sha256

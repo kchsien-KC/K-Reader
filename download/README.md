@@ -66,6 +66,17 @@
 
 壓縮包：`K_Reader_Stage5_files.zip`（8 檔，路徑即 Legado 3.0 樹落點）。
 
-## 待續階段
+## Stage 6 — README＋GitHub Actions 雲端編譯＋init_k_reader.sh（已完成）
 
-- Stage 6：README、GitHub Actions（Tag 觸發雲端編譯 `K_Reader_v1.2.apk`）、init_k_reader.sh
+| 檔案 | 行數 | 說明 |
+| --- | --- | --- |
+| `README.md` | 138 | 專案總覽：旗艦功能一覽（六階段 15 領域）、與原版完全隔離規格、隱私承諾（零統計 SDK／零遙測）；本地建置（init 用法＋gradlew 命令）與雲端編譯（Tag 推送＋四簽章 Secrets 表＋版本規則）指引；建置需求工具鏈表；六階段交付對照；GPL-3.0 授權聲明 |
+| `.github/workflows/build.yml` | 140 | Tag（`v*`）觸發雲端編譯：JDK 17 temurin＋Gradle 建置快取；防呆檢查（偵測未轉換 Legado 樹即快速失敗並指引）；四 Secrets 注入正式簽章（缺省自動退回 debug 簽章）；Tag→versionName/versionCode（v1.2→10200 公式）；R8 full 編譯 → `K_Reader_v<版本>.apk`＋SHA-256 校驗檔 → 建置產物上傳＋GitHub Release 發佈（僅 Tag 觸發） |
+| `init_k_reader.sh` | 337 | Legado 3.0 一鍵套名重構（八大步驟，冪等可重跑）：`io.legado.app → com.k.reader` 文字＋目錄雙軌改寫（涵蓋 main／test source set、絕不觸碰 .git）；根專案檔產出（KReader／AGP 8.5.2／Kotlin 1.9.24）；六階段疊加層落地；繁中字串「只增不刪」合併（暫存基底——疊加覆蓋不吞上游鍵）；FileProvider authority 統一 `com.k.reader.filen`；mipmap 點陣圖清剿；Gradle wrapper 對齊 8.7；殘留歸零＋關鍵檔到齊之完整性驗證 |
+| `app/build.gradle.kts`（整合修正版） | 217 | FileProvider authority 由 `com.k.reader.fileprovider` 統一為 `com.k.reader.filen`——與 Stage 5 `GoldenQuoteManager.FILE_PROVIDER_AUTHORITY` 常數一字不差對齊（於疊加時覆寫 Stage 1 版本） |
+
+壓縮包：`K_Reader_Stage6_files.zip`（4 檔，路徑即 Legado 3.0 樹落點；`app/build.gradle.kts` 為整合修正版，套用時覆蓋 Stage 1 版本）。
+
+## 交付完結
+
+六階段全數交付完成。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。

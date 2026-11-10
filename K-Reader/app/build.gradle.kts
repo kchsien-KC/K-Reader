@@ -8,7 +8,9 @@
  *  隔離規格（與原版 io.legado.app 完美並存、資料零衝突）：
  *   · applicationId = com.k.reader
  *   · namespace     = com.k.reader（套名重構由 init_k_reader.sh 一鍵完成）
- *   · FileProvider  = com.k.reader.fileprovider（${FILE_PROVIDER_AUTHORITY}）
+ *   · FileProvider  = com.k.reader.filen（${FILE_PROVIDER_AUTHORITY}；
+ *     與 Stage 5 GoldenQuoteManager.FILE_PROVIDER_AUTHORITY 常數對齊，
+ *     並由 init_k_reader.sh 統一改寫 AndroidManifest 之 authority）
  *   · 備份 / 匯出隔離目錄 = 外部儲存 KReader/（BuildConfig.BACKUP_DIR_NAME）
  *
  *  體積與效能底線（安裝檔 < 15MB、冷啟動 < 0.5s）：
@@ -53,8 +55,9 @@ android {
         versionCode = kVersionCode
         versionName = kVersionName
 
-        // 獨立 FileProvider 授權名稱（AndroidManifest 以 ${FILE_PROVIDER_AUTHORITY} 引用）
-        manifestPlaceholders["FILE_PROVIDER_AUTHORITY"] = "${applicationId}.fileprovider"
+        // 獨立 FileProvider 授權名稱（AndroidManifest 由 init_k_reader.sh 統一改寫為
+        // com.k.reader.filen；與 GoldenQuoteManager.FILE_PROVIDER_AUTHORITY 對齊）
+        manifestPlaceholders["FILE_PROVIDER_AUTHORITY"] = "${applicationId}.filen"
 
         // 本地備份與匯出隔離目錄（外部儲存 /KReader/，程式碼層引用）
         buildConfigField("String", "BACKUP_DIR_NAME", "\"KReader\"")
