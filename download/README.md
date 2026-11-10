@@ -1,6 +1,6 @@
 # K.閱讀 v1.2 旗艦純淨版 — 階段交付檔清單
 
-以純淨開源「閱讀（Legado 3.0）」架構為起點，九階段逐段交付（Stage 1~6 原規劃＋Stage 7／8／9 三包旗艦增益）。
+以純淨開源「閱讀（Legado 3.0）」架構為起點，十階段逐段交付（Stage 1~6 原規劃＋Stage 7~10 四包旗艦增益）。
 套名為 Stage 6 `init_k_reader.sh` 重構後之 `com.k.reader`（applicationId：`com.k.reader`）。
 
 ## Stage 1 — 專案識別與編譯配置（已完成）
@@ -128,6 +128,23 @@
 
 壓縮包：`K_Reader_Stage9_files.zip`（10 檔，路徑即 Legado 3.0 樹落點；`strings.xml`／`init_k_reader.sh`／`README.md` 為整合修正版，套用時覆蓋前階段版本）。
 
+## Stage 10 — 本地書匯入＋備份加密＋閱讀週報／月報＋休息提醒＋書源倉庫（已完成）
+
+| 檔案 | 行數 | 說明 |
+| --- | --- | --- |
+| `app/src/main/java/com/k/reader/help/book/LocalBookImporter.kt` | 511 | 本地 TXT 匯入：編碼智慧偵測（BOM 三種→嚴格 UTF-8→Big5／GB18030 候選評分——高頻字命中−4×替換字元；同分取 Big5 台灣場景先驗）；章節切分（行首錨定＋獨立短行雙約束；第X卷/章/節/回＋Chapter N＋序章楔子尾聲繁簡並寫；偽章<80字向前合併、導言併入首章、零命中全文單章）；全檔 SHA-256 前 16 碼身分證（同檔重複匯入直接回既有）；chapters/NNN.txt 三位章號（字典序即章序）；簡體比例≥30% 可選簡轉繁（TraditionalChineseHelper 整合點）；50MB／8000 章規格夾擊 |
+| `app/src/main/java/com/k/reader/help/backup/BackupCryptoHelper.kt` | 380 | 備份加密：AES-256-GCM 認證加密＋PBKDF2WithHmacSHA256 21 萬迭代金鑰衍生；KRC1 自包含檔案格式（魔術4B＋版本1B＋salt 16B＋nonce 12B——換手機輸密碼即解，不依賴本機偏好檔）；AAD 綁定標頭（篡改即整檔作廢）；錯誤三分離（密碼錯／未供密碼／非 KRC1 檔）；CipherOutputStream 串流加解密（大檔不爆記憶體）；自檢 API |
+| `app/src/main/java/com/k/reader/help/statistics/ReadingReportHelper.kt` | 462 | 閱讀週報／月報：滾動 7／30 天窗口（與統計管理員同一口徑）；時長／字數／活躍天／完本數＋日均＋最長的一天彙整；CSV（UTF-8 BOM——Excel 直開不亂碼）；1080×1350 青黛宣紙報表卡（與金句卡同宗色票；三宮格大數字＋日閱量長條圖＋StaticLayout 換行不截字）；FileProvider 分享＋MediaStore 存相簿（Q+／legacy 雙路徑） |
+| `app/src/main/java/com/k/reader/help/statistics/ReadStatisticsManager.kt`（整合修正版） | 282 | Stage 10 整合修正：增開 `dailyWordCount()` 唯讀視窗（loadDaily 私有不外漏，僅開單日一孔供報表 CSV 字數欄）；套用時覆蓋 Stage 5 版本 |
+| `app/src/main/java/com/k/reader/help/config/RestReminderHelper.kt` | 273 | 休息提醒：連續閱讀分鐘唯一計量（與統計管理員同餵入點）；門檻 45 分鐘預設（20~120 夾擊）；餵入間隔>5 分鐘歸零重來；延後＝閱讀時間基準再讀 10 分鐘（累計撥到門檻前 10 分，暫停不折損額度）；夜間 23:00–07:00 靜默窗＋墨水屏永不震動（EInkHelper 同包直連）；API 26 以下 legacy 震動相容 |
+| `app/src/main/java/com/k/reader/help/source/SourceRepoManager.kt` | 370 | 書源倉庫訂閱：URL 去重訂閱清單（filesDir JSON 帳冊，30 倉上限）；SHA-256 內容指紋版本比對（ETag 不可靠——內容雜湊是唯一誠實的版本號）；抓取全程三件套護航（限流＋瀏覽器標頭＋SSL 寬容）；指紋未變零寫入；更新走與剪貼簿匯入同路（Entity 解析＋空分組補智慧分組＋insertOrUpdate 冪等）；一鍵全庫更新逐倉串行、單倉失敗不拖垮整批 |
+| `app/src/main/res/layout/dialog_source_repo.xml` | 146 | 書源倉庫管理對話框：頂部格式說明＋textUri 單行輸入框＋空狀態提示＋320dp 捲動清單＋更新進度狀態列（閒時 gone）＋新增訂閱（實心）／一鍵全部更新（外框）雙動作；與字體管理對話框同款視覺語言 |
+| `app/src/main/res/values-zh-rTW/strings.xml`（更新版） | 570 | Stage 10 新增 81 鍵（404→485，只增不刪）：本地書匯入 16 鍵＋備份加密 14 鍵＋閱讀報表 19 鍵＋休息提醒 12 鍵＋書源倉庫 19 鍵＋規格說明鍵；套用時覆蓋 Stage 9 版本（init 腳本「只增不刪」合併自動吸納上游既有鍵） |
+| `init_k_reader.sh`（整合修正版） | 358 | Stage 10 擴充：關鍵檔清單納入五個新 Kotlin 模組＋書源倉庫對話框（43 檔驗證）＋「十階段」字樣同步（40 Kotlin 模組）；套用時覆蓋 Stage 9 版本 |
+| `README.md`（整合修正版） | 168 | Stage 10 收錄：旗艦功能一覽 35 領域（＋本地書/備份安全/成長報表/護體/書源倉庫）、40 Kotlin 模組／485 鍵結構樹、十階段交付對照；套用時覆蓋 Stage 9 版本 |
+
+壓縮包：`K_Reader_Stage10_files.zip`（10 檔，路徑即 Legado 3.0 樹落點；`ReadStatisticsManager.kt`／`strings.xml`／`init_k_reader.sh`／`README.md` 為整合修正版，套用時覆蓋前階段版本）。
+
 ## 交付完結
 
-九階段全數交付完成（Stage 1~6 原規劃＋Stage 7／8／9 三包旗艦增益）。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。
+十階段全數交付完成（Stage 1~6 原規劃＋Stage 7~10 四包旗艦增益）。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。

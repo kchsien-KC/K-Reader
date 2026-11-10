@@ -210,6 +210,15 @@ object ReadStatisticsManager {
 
     fun chartTitle(): String = AppContext.ctx.getString(R.string.stats_chart_daily)
 
+    // ═════════════════ 報表整合（Stage 10） ═════════════════
+
+    /**
+     * 單日字數唯讀視窗（ReadingReportHelper CSV 字數欄用）。
+     * loadDaily 為私有——僅開此一孔，不暴露整表。
+     */
+    fun dailyWordCount(dateKey: String): Long =
+        loadDaily()[dateKey]?.words ?: 0L
+
     // ═════════════════ 持久化與工具 ═════════════════
 
     /** 每毫秒數（day key 以本地時區日界切分） */

@@ -476,4 +476,95 @@
     <string name="turn_zone_center">呼出選單</string>
     <string name="turn_rtl_note">手勢區域已依 RTL 版面鏡像</string>
     <string name="turn_anim_changed_fmt">已切換為 %1$s</string>
+
+    <!-- ═══════════ Stage 10：本地書匯入 ═══════════ -->
+    <string name="local_import_title">本地書籍匯入</string>
+    <string name="local_importing">正在匯入…</string>
+    <string name="local_import_success_fmt">已匯入《%1$s》（%2$d 章）</string>
+    <string name="local_import_duplicate_fmt">此書已匯入過（%1$s）</string>
+    <string name="local_import_failed">匯入失敗：%1$s</string>
+    <string name="local_invalid_file">不支援的檔案（僅支援 TXT）</string>
+    <string name="local_too_big">單檔上限 %1$s</string>
+    <string name="local_empty_file">檔案內容為空</string>
+    <string name="local_no_chapter">未偵測到章節——以全文單章匯入</string>
+    <string name="local_charset_detected_fmt">偵測編碼：%1$s</string>
+    <string name="local_s2t_converted_fmt">偵測到簡體內容，已自動轉為繁體</string>
+    <string name="local_fulltext_chapter">全文</string>
+    <string name="local_delete_confirm">刪除本地書《%1$s》？</string>
+    <string name="local_deleted_fmt">已刪除《%1$s》</string>
+    <string name="local_convert_s2t">匯入時簡體轉繁體</string>
+    <string name="local_convert_s2t_hint">偵測簡體比例過半才轉換（OpenCC s2twp）</string>
+
+    <!-- ═══════════ Stage 10：備份加密 ═══════════ -->
+    <string name="bkcrypto_title">備份加密</string>
+    <string name="bkcrypto_enable">啟用備份加密</string>
+    <string name="bkcrypto_algo_note">AES-256-GCM 認證加密＋PBKDF2 金鑰衍生</string>
+    <string name="bkcrypto_password_hint">設定加密密碼（至少 8 字元）</string>
+    <string name="bkcrypto_password_again">再次輸入密碼</string>
+    <string name="bkcrypto_password_mismatch">兩次輸入不一致</string>
+    <string name="bkcrypto_password_too_short">密碼至少需 8 字元</string>
+    <string name="bkcrypto_enabled">已啟用備份加密（AES-256-GCM）</string>
+    <string name="bkcrypto_disabled">已停用備份加密</string>
+    <string name="bkcrypto_wrong_password">密碼錯誤或檔案已損毀</string>
+    <string name="bkcrypto_invalid_format">不是有效的加密備份檔（KRC1）</string>
+    <string name="bkcrypto_need_password">此備份已加密——請輸入密碼</string>
+    <string name="bkcrypto_warn_lose">密碼遺失將無法還原雲端備份（無救援管道）</string>
+    <string name="bkcrypto_self_test_fmt">加密自檢通過（%1$d 毫秒）</string>
+
+    <!-- ═══════════ Stage 10：閱讀報表 ═══════════ -->
+    <string name="report_title">閱讀報表</string>
+    <string name="report_week">閱讀週報</string>
+    <string name="report_month">閱讀月報</string>
+    <string name="report_period_fmt">%1$s ～ %2$s</string>
+    <string name="report_col_duration">閱讀時長</string>
+    <string name="report_col_words">閱讀字數</string>
+    <string name="report_col_days">活躍天數</string>
+    <string name="report_col_days_fmt">%1$d 天</string>
+    <string name="report_chart_daily">每日閱讀時長</string>
+    <string name="report_best_day">最長的一天：%1$s（%2$s）</string>
+    <string name="report_avg_day">日均 %1$s</string>
+    <string name="report_finished_fmt">本期完本 %1$d 本</string>
+    <string name="report_brand">K.閱讀・旗艦純淨版</string>
+    <string name="report_csv_title">日期,時長(分),字數</string>
+    <string name="report_empty">這段期間沒有閱讀記錄</string>
+    <string name="report_export_csv">匯出 CSV</string>
+    <string name="report_export_image">分享報表卡</string>
+    <string name="report_exported_fmt">已匯出 %1$s</string>
+    <string name="report_saved_gallery">報表卡已存入相簿</string>
+
+    <!-- ═══════════ Stage 10：休息提醒 ═══════════ -->
+    <string name="rest_title">休息提醒</string>
+    <string name="rest_channel_desc">連續閱讀過久時的護體提醒</string>
+    <string name="rest_enable">啟用休息提醒</string>
+    <string name="rest_interval_fmt">連續閱讀 %1$d 分鐘後提醒</string>
+    <string name="rest_interval_range">可設定範圍 20～120 分鐘</string>
+    <string name="rest_notify_title">該休息一下了</string>
+    <string name="rest_notify_body">你已連續閱讀 %1$d 分鐘——起身動一動、看看遠方</string>
+    <string name="rest_snooze">再讀 10 分鐘</string>
+    <string name="rest_snoozed">已延後（閱讀時間再計 10 分鐘）</string>
+    <string name="rest_reset">重設連續閱讀計時</string>
+    <string name="rest_quiet_hours">夜間靜默：23:00–07:00 只亮通知不震動</string>
+    <string name="rest_eink_note">墨水屏模式下永不震動</string>
+    <string name="rest_progress_fmt">本輪已連續 %1$d 分鐘</string>
+
+    <!-- ═══════════ Stage 10：書源倉庫 ═══════════ -->
+    <string name="repo_title">書源倉庫</string>
+    <string name="repo_add_hint">輸入書源倉庫網址（http／https JSON）</string>
+    <string name="repo_add">新增訂閱</string>
+    <string name="repo_added_fmt">已訂閱 %1$s</string>
+    <string name="repo_exists">此倉庫已在訂閱清單</string>
+    <string name="repo_invalid_url">網址格式不正確</string>
+    <string name="repo_full">已達 %1$d 個倉庫訂閱上限</string>
+    <string name="repo_checking">檢查更新中…</string>
+    <string name="repo_check_update">檢查更新</string>
+    <string name="repo_update_all">一鍵全部更新</string>
+    <string name="repo_updated_fmt">已更新 %1$s（%2$d 個書源）</string>
+    <string name="repo_up_to_date">已是最新</string>
+    <string name="repo_check_failed">檢查失敗：%1$s</string>
+    <string name="repo_json_invalid">倉庫內容不是有效的書源 JSON</string>
+    <string name="repo_sources_count">%1$d 個書源</string>
+    <string name="repo_last_check_fmt">上次檢查：%1$s</string>
+    <string name="repo_never_checked">尚未檢查過</string>
+    <string name="repo_empty_hint">尚未訂閱任何書源倉庫</string>
+    <string name="repo_delete_confirm">移除此倉庫訂閱？（已匯入書源不受影響）</string>
 </resources>

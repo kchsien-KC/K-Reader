@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════════
+   K.閱讀 v1.2 — 書源倉庫管理對話框（Stage 10）
+  ═══════════════════════════════════════════════════════════════
+   整合方式：書源管理頁「倉庫」→ 載入本對話框 →
+   SourceRepoManager.listRepos() 餵列表；
+   「新增訂閱」→ addRepo(edt_repo_url 文本)；
+   「一鍵全部更新」→ updateAll()（進度由狀態列逐倉回報）。
+
+   節點職責：
+    · tv_repo_hint         頂部格式說明（http／https JSON 網址）
+    · edt_repo_url         新增訂閱輸入框（singleLine——
+                           網址不換行，IME 動作 GO 直送）
+    · tv_repo_empty        空狀態提示（無訂閱時顯示）
+    · rv_repo_list         倉庫列表（列布局由適配器以程式碼
+                           組建——零額外 item 檔案，體積紀律）
+    · tv_repo_progress     更新進度狀態列（閒置時由程式碼隱藏）
+    · btn_repo_add         新增訂閱（實心主色鈕）
+    · btn_repo_update_all  一鍵全部更新（外框風格鈕）
+
+   設計紀律：
+    · 純主題屬性著色（colorPrimary／colorOnPrimary／
+      textColorSecondary），日夜間自動適配
+    · 零點陣圖、零額外 drawable 檔案（體積紀律）
+    · RTL 友善（marginStart/End＋paddingStart/End）
+    · 與 dialog_font_manager／dialog_bookmark_list 同款視覺語言
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- 頂部格式說明 -->
+    <TextView
+        android:id="@+id/tv_repo_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/repo_add_hint"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="13sp" />
+
+    <!-- 新增訂閱輸入框 -->
+    <EditText
+        android:id="@+id/edt_repo_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/repo_add_hint"
+        android:imeOptions="actionGo"
+        android:inputType="textUri"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <!-- 空狀態提示（有訂閱時由程式碼隱藏） -->
+    <TextView
+        android:id="@+id/tv_repo_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="96dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:text="@string/repo_empty_hint"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp" />
+
+    <!-- 倉庫列表（捲動容器包覆——長清單不撐爆對話框） -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="320dp"
+        android:scrollbars="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_repo_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
+    </ScrollView>
+
+    <!-- 更新進度狀態列（閒置時由程式碼隱藏） -->
+    <TextView
+        android:id="@+id/tv_repo_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/repo_checking"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <!-- 雙動作列：新增訂閱（實心）＋一鍵全部更新（外框） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_repo_add"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="@string/repo_add"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/btn_repo_update_all"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="@string/repo_update_all"
+            android:textColor="?attr/textColorSecondary"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

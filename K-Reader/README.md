@@ -8,7 +8,7 @@
 
 ---
 
-## 旗艦功能一覽（九階段交付）
+## 旗艦功能一覽（十階段交付）
 
 | 領域 | 功能 |
 | --- | --- |
@@ -42,6 +42,11 @@
 | 助眠 | 聽書睡眠定時（倒數 15／30／45／60 分或本章結束；最後五分鐘音量漸弱） |
 | 字體 | 自訂字體管理（TTF／OTF 魔術位元組驗體＋30MB 上限＋20 款倉儲＋一鍵還原預設） |
 | 手勢 | 翻頁手勢（左右各 30% 翻頁區＋RTL 鏡像＋音量鍵翻頁可反轉；墨水屏固定無動畫） |
+| 本地書 | 本地 TXT 匯入（Big5／UTF-8／GB18030 編碼偵測評分＋章節切分＋SHA-256 去重；可選簡轉繁） |
+| 備份安全 | 備份加密（AES-256-GCM＋PBKDF2 21 萬迭代；KRC1 自包含檔案格式；跨裝置密碼還原） |
+| 成長報表 | 閱讀週報／月報（滾動 7／30 天彙整＋CSV（UTF-8 BOM）＋1080×1350 青黛報表卡分享） |
+| 護體 | 休息提醒（連續閱讀 20～120 分鐘門檻＋再讀 10 分鐘延後；夜間靜默；墨水屏不震動） |
+| 書源維運 | 書源倉庫訂閱（SHA-256 內容指紋版本比對＋一鍵全庫更新；三件套護航） |
 
 ## 與原版「閱讀」完全隔離
 
@@ -66,7 +71,7 @@ WebDAV 備份端點、你設定的 AI 端點。無任何背景資料回報。
 ```
 
 腳本執行八大步驟（冪等可重跑）：套名重構 `io.legado.app → com.k.reader`、
-產生根專案檔、疊加九階段交付檔、繁中字串「只增不刪」合併、FileProvider
+產生根專案檔、疊加十階段交付檔、繁中字串「只增不刪」合併、FileProvider
 authority 統一、mipmap 點陣圖清剿（零點陣圖規範）、Gradle Wrapper 對齊 8.7、
 完整性驗證。`--help` 可看完整說明。
 
@@ -120,19 +125,19 @@ git tag v1.2 && git push origin main --tags
 ## 本倉庫結構（疊加層）
 
 ```
-├── init_k_reader.sh                # 一鍵套名重構腳本（Stage 6；Stage 7~9 擴充）
-├── README.md                       # 本文件（Stage 6；Stage 7~9 增益包收錄）
+├── init_k_reader.sh                # 一鍵套名重構腳本（Stage 6；Stage 7~10 擴充）
+├── README.md                       # 本文件（Stage 6；Stage 7~10 增益包收錄）
 ├── gradle.properties               # 全域建置參數（R8 full mode 等）
 ├── .github/workflows/build.yml     # Tag 觸發雲端編譯（Stage 6）
 └── app/
     ├── build.gradle.kts            # applicationId／簽章／依賴（Stage 1）
     ├── proguard-rules.pro          # R8 keep 規則（Stage 1）
     └── src/main/
-        ├── java/com/k/reader/…     # 35 個 Kotlin 模組（Stage 2~5、7~9）
-        └── res/                    # 圖示／布局／404 鍵繁中字串（Stage 1~5、7~9）
+        ├── java/com/k/reader/…     # 40 個 Kotlin 模組（Stage 2~5、7~10）
+        └── res/                    # 圖示／布局／485 鍵繁中字串（Stage 1~5、7~10）
 ```
 
-## 九階段交付對照
+## 十階段交付對照
 
 | 階段 | 範圍 |
 | --- | --- |
@@ -145,12 +150,16 @@ git tag v1.2 && git push origin main --tags
 | Stage 7 | 隱私鎖＋台灣排版規範＋自動追更＋護眼色溫＋字詞快查（增益包） |
 | Stage 8 | 書內全文搜尋＋劃線筆記本＋閱讀目標＋定時日夜切換＋書架整理（增益包） |
 | Stage 9 | 章節書籤＋離線快取＋聽書睡眠定時＋自訂字體＋翻頁手勢（閱讀體驗增益包） |
+| Stage 10 | 本地書匯入＋備份加密＋閱讀週報／月報＋休息提醒＋書源倉庫（資產與健康增益包） |
 
 Stage 6 整合修正：`app/build.gradle.kts` 之 FileProvider authority 統一為
 `com.k.reader.filen`（與 Stage 5 `GoldenQuoteManager` 常數對齊）。Stage 7
 同步擴充 `init_k_reader.sh` 關鍵檔清單與繁中字串。Stage 8 再擴充關鍵檔
 清單（25→30 Kotlin 模組）與繁中字串（286→345 鍵，只增不刪）。Stage 9
 續擴充關鍵檔清單（30→35 Kotlin 模組）與繁中字串（345→404 鍵，只增不刪）。
+Stage 10 續擴充關鍵檔清單（35→40 Kotlin 模組＋書源倉庫對話框布局）與繁
+中字串（404→485 鍵，只增不刪），並為 `ReadStatisticsManager` 增開
+`dailyWordCount()` 唯讀視窗（報表 CSV 字數欄）。
 
 ## 授權
 
