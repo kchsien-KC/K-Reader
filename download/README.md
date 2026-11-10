@@ -1,6 +1,6 @@
 # K.閱讀 v1.2 旗艦純淨版 — 階段交付檔清單
 
-以純淨開源「閱讀（Legado 3.0）」架構為起點，八階段逐段交付（Stage 1~6 原規劃＋Stage 7／8 兩包旗艦增益）。
+以純淨開源「閱讀（Legado 3.0）」架構為起點，九階段逐段交付（Stage 1~6 原規劃＋Stage 7／8／9 三包旗艦增益）。
 套名為 Stage 6 `init_k_reader.sh` 重構後之 `com.k.reader`（applicationId：`com.k.reader`）。
 
 ## Stage 1 — 專案識別與編譯配置（已完成）
@@ -111,6 +111,23 @@
 
 壓縮包：`K_Reader_Stage8_files.zip`（10 檔，路徑即 Legado 3.0 樹落點；`strings.xml`／`init_k_reader.sh`／`README.md` 為整合修正版，套用時覆蓋前階段版本）。
 
+## Stage 9 — 章節書籤＋離線快取＋聽書睡眠定時＋自訂字體＋翻頁手勢（已完成）
+
+| 檔案 | 行數 | 說明 |
+| --- | --- | --- |
+| `app/src/main/java/com/k/reader/help/bookmark/ChapterBookmarkManager.kt` | 255 | 章節書籤：章號＋章內字元位置＋前後文快照（前後各 20 字窗口，內容未載入時為 null——釘選不失敗）＋自訂標籤；書名作者＋bookUrl 雙鍵（換源跨源存活）；jumpTargetsAround 上一枚／下一枚跳轉；單書 30 枚上限滿了拒收不淘汰（讀者路標不靜默刪）；同章同位置視為改標籤不重複 |
+| `app/src/main/java/com/k/reader/help/cache/OfflineCacheManager.kt` | 290 | 離線快取：precache 後方 N 章預載（1..50 夾擊，ChapterLoader 介面注入——不綁抓取實作；已快取跳過、單章失敗不拖垮整批）；單章 200_000 字護欄；章檔「bookUrl 雜湊/六位章號.txt」落 filesDir/chapter_cache/（字典序即章序）；stats 全樹體檢；evictToBudget LRU 收編（512MB 預設；檔案 lastModified 即時鐘零額外索引）；單書／全庫一鍵清理 |
+| `app/src/main/java/com/k/reader/help/tts/TtsSleepTimerHelper.kt` | 189 | 聽書睡眠定時：雙模式（倒數 15／30／45／60 分鐘預設檔／本章結束）；停止前最後五分鐘音量線性衰減（suggestedVolume 1.0→0）；牆鐘續算（App 被殺重啟倒數不歸零）；onChapterFinished 章界立桿；shouldStopNow 剎車查詢（本章結束命中自動 stop） |
+| `app/src/main/java/com/k/reader/help/font/CustomFontManager.kt` | 287 | 自訂字體：SAF Uri 串流匯入，魔術位元組驗體（TTF 0x00010000／OTF "OTTO"——偽裝字體雜檔拒收）；複製途中 30MB 夾擊超限即棄不留半套；fonts_index.json 記帳（20 款上限）與檔案系統對帳（被誤刪自動除帳）；apply／revert 偏好檔持久化；Typeface.createFromFile 適配；刪套用中字體自動 revert 不留懸空引用 |
+| `app/src/main/java/com/k/reader/help/turn/PageTurnHelper.kt` | 183 | 翻頁手勢：左右各 30% 翻頁區＋中間 40% 選單（hitZone 純函式；RTL 版面自動鏡像）；覆蓋／滑動／無動畫三式（墨水屏强制無動畫——與日夜切換墨水屏互斥同一紀律）；音量鍵翻頁可啟用可反轉（volumeKeyZone 映射 KeyEvent，非音量鍵回 null 不攔截）；偏好檔髒值常規化 |
+| `app/src/main/res/layout/dialog_bookmark_list.xml` | 79 | 書籤列表對話框：空狀態提示＋320dp 捲動列表（列布局由適配器程式碼組建——零額外 item 檔）＋釘住目前位置實心主色鈕；純主題屬性、RTL 友善 |
+| `app/src/main/res/layout/dialog_font_manager.xml` | 117 | 字體管理對話框：頂部格式說明＋空狀態提示＋320dp 捲動清單＋匯入（實心）／還原預設（外框）雙動作；與書籤列表同款視覺語言 |
+| `app/src/main/res/values-zh-rTW/strings.xml`（更新版） | 479 | Stage 9 新增 59 鍵（345→404，只增不刪）：章節書籤 12 鍵＋離線快取 10 鍵＋聽書睡眠 9 鍵＋自訂字體 14 鍵＋翻頁手勢 14 鍵；套用時覆蓋 Stage 8 版本（init 腳本「只增不刪」合併自動吸納上游既有鍵） |
+| `init_k_reader.sh`（整合修正版） | 352 | Stage 9 擴充：關鍵檔清單納入五個新 Kotlin 模組（35 檔驗證）＋「九階段」字樣同步；套用時覆蓋 Stage 8 版本 |
+| `README.md`（整合修正版） | 159 | Stage 9 收錄：旗艦功能一覽 30 領域（＋導航/離線/助眠/字體/手勢）、35 Kotlin 模組／404 鍵結構樹、九階段交付對照；套用時覆蓋 Stage 8 版本 |
+
+壓縮包：`K_Reader_Stage9_files.zip`（10 檔，路徑即 Legado 3.0 樹落點；`strings.xml`／`init_k_reader.sh`／`README.md` 為整合修正版，套用時覆蓋前階段版本）。
+
 ## 交付完結
 
-八階段全數交付完成（Stage 1~6 原規劃＋Stage 7／8 兩包旗艦增益）。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。
+九階段全數交付完成（Stage 1~6 原規劃＋Stage 7／8／9 三包旗艦增益）。終態使用流程：`init_k_reader.sh` 對純淨 Legado 3.0 樹套名重構 → 推送 GitHub → `git tag v1.2` → Actions 自動產出並發佈 `K_Reader_v1.2.apk`。

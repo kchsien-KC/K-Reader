@@ -407,4 +407,73 @@
     <string name="shelf_archive_confirm">將 %1$d 本書移入冷凍庫？</string>
     <string name="shelf_archive_done">已歸檔 %1$d 本書</string>
     <string name="shelf_suggestion_none">書架井然有序，無需整理</string>
+
+    <!-- ═══════════ Stage 9：章節書籤 ═══════════ -->
+    <string name="bookmark_title">章節書籤</string>
+    <string name="bookmark_add_current">釘住目前位置</string>
+    <string name="bookmark_empty_hint">還沒有任何書籤——讀到精彩處，釘一枚吧</string>
+    <string name="bookmark_jump_fmt">跳至第 %1$d 章</string>
+    <string name="bookmark_delete">刪除書籤</string>
+    <string name="bookmark_label_hint">書籤標籤（選填）</string>
+    <string name="bookmark_full">這本書的書籤已滿（上限 %1$d 枚）</string>
+    <string name="bookmark_added">已釘選：第 %1$d 章</string>
+    <string name="bookmark_prev_jump">上一枚書籤</string>
+    <string name="bookmark_next_jump">下一枚書籤</string>
+    <string name="bookmark_removed">已移除書籤</string>
+    <string name="bookmark_count_fmt">這本書共 %1$d 枚書籤</string>
+
+    <!-- ═══════════ Stage 9：離線快取 ═══════════ -->
+    <string name="cache_title">離線快取</string>
+    <string name="cache_precache_start">開始預載後方 %1$d 章</string>
+    <string name="cache_precache_done_fmt">已預載 %1$d 章（%2$s）</string>
+    <string name="cache_precache_none">後方章節已全部預載，無需更新</string>
+    <string name="cache_stats_fmt">快取 %1$s・%2$d 章・%3$d 本書</string>
+    <string name="cache_evict_done_fmt">已釋放 %1$s</string>
+    <string name="cache_clear_confirm">清除全部離線快取（%1$s）？</string>
+    <string name="cache_clear_done">已清除 %1$d 章快取</string>
+    <string name="cache_hit">本章已有離線副本</string>
+    <string name="cache_budget_fmt">快取上限 %1$s</string>
+
+    <!-- ═══════════ Stage 9：聽書睡眠定時 ═══════════ -->
+    <string name="tts_sleep_title">聽書睡眠定時</string>
+    <string name="tts_sleep_off">停用</string>
+    <string name="tts_sleep_minutes">倒數計時</string>
+    <string name="tts_sleep_chapter">本章結束</string>
+    <string name="tts_sleep_minutes_fmt">%1$d 分鐘後停止</string>
+    <string name="tts_sleep_remaining_fmt">剩餘 %1$s</string>
+    <string name="tts_sleep_chapter_started">已設定：本章結束後停止</string>
+    <string name="tts_sleep_stopped">已停止睡眠定時</string>
+    <string name="tts_sleep_fade_note">停止前最後五分鐘音量漸弱</string>
+
+    <!-- ═══════════ Stage 9：自訂字體 ═══════════ -->
+    <string name="font_title">字體管理</string>
+    <string name="font_hint">支援 TTF／OTF，單檔上限 %1$s</string>
+    <string name="font_import">匯入字體</string>
+    <string name="font_revert">還原預設字體</string>
+    <string name="font_apply">套用</string>
+    <string name="font_applied_fmt">已套用字體 %1$s</string>
+    <string name="font_reverted">已還原預設字體</string>
+    <string name="font_empty_hint">尚未匯入字體——從檔案匯入 TTF／OTF</string>
+    <string name="font_invalid">這不是有效的字體檔（僅支援 TTF／OTF）</string>
+    <string name="font_too_big">單一字體上限 %1$s</string>
+    <string name="font_full">已達 %1$d 款字體上限</string>
+    <string name="font_delete">刪除字體</string>
+    <string name="font_deleted_fmt">已刪除 %1$s</string>
+    <string name="font_size_fmt">%1$s</string>
+
+    <!-- ═══════════ Stage 9：翻頁與手勢 ═══════════ -->
+    <string name="turn_title">翻頁與手勢</string>
+    <string name="turn_anim_cover">覆蓋翻頁</string>
+    <string name="turn_anim_slide">滑動翻頁</string>
+    <string name="turn_anim_none">無動畫</string>
+    <string name="turn_anim_eink_fixed">墨水屏模式下固定為無動畫</string>
+    <string name="turn_zone_hint">左右各 30% 翻頁，中間 40% 呼出選單</string>
+    <string name="turn_volume_key">音量鍵翻頁</string>
+    <string name="turn_volume_key_hint">音量上鍵上一頁、下鍵下一頁</string>
+    <string name="turn_volume_invert">反轉音量鍵方向</string>
+    <string name="turn_zone_prev">上一頁</string>
+    <string name="turn_zone_next">下一頁</string>
+    <string name="turn_zone_center">呼出選單</string>
+    <string name="turn_rtl_note">手勢區域已依 RTL 版面鏡像</string>
+    <string name="turn_anim_changed_fmt">已切換為 %1$s</string>
 </resources>

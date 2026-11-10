@@ -8,7 +8,7 @@
 
 ---
 
-## 旗艦功能一覽（八階段交付）
+## 旗艦功能一覽（九階段交付）
 
 | 領域 | 功能 |
 | --- | --- |
@@ -37,6 +37,11 @@
 | 習慣 | 閱讀目標（分鐘／字數二擇一＋連續天數 streak＋晚間提醒與達成通知） |
 | 主題 | 定時日夜切換（固定時刻／日出日落緯度概算；墨水屏互斥；形態翻轉偵測） |
 | 書架維運 | 書架整理助手（三桶體檢＋五鍵排序＋冷凍一鍵歸檔） |
+| 導航 | 章節書籤（章內字元定位＋前後文快照＋上一枚／下一枚跳轉；單書 30 枚） |
+| 離線 | 離線快取（後方 N 章預載＋LRU 512MB 預算＋單書／全庫一鍵清理） |
+| 助眠 | 聽書睡眠定時（倒數 15／30／45／60 分或本章結束；最後五分鐘音量漸弱） |
+| 字體 | 自訂字體管理（TTF／OTF 魔術位元組驗體＋30MB 上限＋20 款倉儲＋一鍵還原預設） |
+| 手勢 | 翻頁手勢（左右各 30% 翻頁區＋RTL 鏡像＋音量鍵翻頁可反轉；墨水屏固定無動畫） |
 
 ## 與原版「閱讀」完全隔離
 
@@ -61,7 +66,7 @@ WebDAV 備份端點、你設定的 AI 端點。無任何背景資料回報。
 ```
 
 腳本執行八大步驟（冪等可重跑）：套名重構 `io.legado.app → com.k.reader`、
-產生根專案檔、疊加八階段交付檔、繁中字串「只增不刪」合併、FileProvider
+產生根專案檔、疊加九階段交付檔、繁中字串「只增不刪」合併、FileProvider
 authority 統一、mipmap 點陣圖清剿（零點陣圖規範）、Gradle Wrapper 對齊 8.7、
 完整性驗證。`--help` 可看完整說明。
 
@@ -115,19 +120,19 @@ git tag v1.2 && git push origin main --tags
 ## 本倉庫結構（疊加層）
 
 ```
-├── init_k_reader.sh                # 一鍵套名重構腳本（Stage 6；Stage 7/8 擴充）
-├── README.md                       # 本文件（Stage 6；Stage 7/8 增益包收錄）
+├── init_k_reader.sh                # 一鍵套名重構腳本（Stage 6；Stage 7~9 擴充）
+├── README.md                       # 本文件（Stage 6；Stage 7~9 增益包收錄）
 ├── gradle.properties               # 全域建置參數（R8 full mode 等）
 ├── .github/workflows/build.yml     # Tag 觸發雲端編譯（Stage 6）
 └── app/
     ├── build.gradle.kts            # applicationId／簽章／依賴（Stage 1）
     ├── proguard-rules.pro          # R8 keep 規則（Stage 1）
     └── src/main/
-        ├── java/com/k/reader/…     # 30 個 Kotlin 模組（Stage 2~5、7、8）
-        └── res/                    # 圖示／布局／345 鍵繁中字串（Stage 1~5、7、8）
+        ├── java/com/k/reader/…     # 35 個 Kotlin 模組（Stage 2~5、7~9）
+        └── res/                    # 圖示／布局／404 鍵繁中字串（Stage 1~5、7~9）
 ```
 
-## 八階段交付對照
+## 九階段交付對照
 
 | 階段 | 範圍 |
 | --- | --- |
@@ -139,11 +144,13 @@ git tag v1.2 && git push origin main --tags
 | Stage 6 | README＋GitHub Actions 雲端編譯＋init_k_reader.sh |
 | Stage 7 | 隱私鎖＋台灣排版規範＋自動追更＋護眼色溫＋字詞快查（增益包） |
 | Stage 8 | 書內全文搜尋＋劃線筆記本＋閱讀目標＋定時日夜切換＋書架整理（增益包） |
+| Stage 9 | 章節書籤＋離線快取＋聽書睡眠定時＋自訂字體＋翻頁手勢（閱讀體驗增益包） |
 
 Stage 6 整合修正：`app/build.gradle.kts` 之 FileProvider authority 統一為
 `com.k.reader.filen`（與 Stage 5 `GoldenQuoteManager` 常數對齊）。Stage 7
 同步擴充 `init_k_reader.sh` 關鍵檔清單與繁中字串。Stage 8 再擴充關鍵檔
-清單（25→30 Kotlin 模組）與繁中字串（286→345 鍵，只增不刪）。
+清單（25→30 Kotlin 模組）與繁中字串（286→345 鍵，只增不刪）。Stage 9
+續擴充關鍵檔清單（30→35 Kotlin 模組）與繁中字串（345→404 鍵，只增不刪）。
 
 ## 授權
 
