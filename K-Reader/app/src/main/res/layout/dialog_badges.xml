@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════════
+   K.閱讀 v1.2 — 成就徽章牆對話框（Stage 11）
+  ═══════════════════════════════════════════════════════════════
+   整合方式：設定頁「成就徽章」→ 載入本對話框 →
+   AchievementBadgeManager.badgeWall() 餵 15 格（五維×三階）；
+   授勳格由適配器以「tier 名＋維度名」渲染，未授勳格顯示
+   進度文案（badge_progress_fmt：7 / 30 天）。
+
+   節點職責：
+    · tv_badge_summary   頂部統計行（badge_summary_fmt：
+                         「已授 6 / 15 枚」）
+    · tv_badge_hint      空牆提示（一枚未授時顯示：先去開卷）
+    · rv_badge_list      徽章格列表（GridLayoutManager 3 列；
+                         列布局由適配器以程式碼組建——零額外
+                         item 檔案，體積紀律與同款視覺語言）
+    · btn_badge_close    關閉（外框風格鈕）
+
+   設計紀律：
+    · 純主題屬性著色（colorPrimary／colorOnPrimary／
+      textColorSecondary），日夜間自動適配
+    · 零點陣圖、零額外 drawable 檔案（體積紀律）
+    · RTL 友善（marginStart/End＋paddingStart/End）
+    · 與 dialog_source_repo／dialog_font_manager 同款視覺語言
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- 頂部統計行：已授 X / 15 枚 -->
+    <TextView
+        android:id="@+id/tv_badge_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/badge_summary_zero"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- 空牆提示（適配器以程式碼控制顯隱） -->
+    <TextView
+        android:id="@+id/tv_badge_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:text="@string/badge_empty_hint"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <!-- 徽章牆：GridLayoutManager 3 列（程式碼設定） -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_badge_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:minHeight="240dp"
+        android:overScrollMode="ifContentScrolls" />
+
+    <!-- 關閉鈕（外框風格） -->
+    <Button
+        android:id="@+id/btn_badge_close"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/badge_close" />
+
+</LinearLayout>

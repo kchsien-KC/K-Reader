@@ -567,4 +567,76 @@
     <string name="repo_never_checked">尚未檢查過</string>
     <string name="repo_empty_hint">尚未訂閱任何書源倉庫</string>
     <string name="repo_delete_confirm">移除此倉庫訂閱？（已匯入書源不受影響）</string>
+
+    <!-- ═══ Stage 11：閱讀習慣養成與分享增益包（485→545 鍵，只增不刪） ═══ -->
+
+    <!-- 成就徽章（AchievementBadgeManager＋dialog_badges.xml） -->
+    <string name="badge_title">成就徽章</string>
+    <string name="badge_awarded">已授勳</string>
+    <string name="badge_locked">未解鎖</string>
+    <string name="badge_disabled">未啟用</string>
+    <string name="badge_dim_streak">連續開卷</string>
+    <string name="badge_dim_hours">總閱讀時數</string>
+    <string name="badge_dim_words">總閱讀字數</string>
+    <string name="badge_dim_quotes">金句收藏</string>
+    <string name="badge_dim_vocab">生詞收藏</string>
+    <string name="badge_tier_bronze">銅</string>
+    <string name="badge_tier_silver">銀</string>
+    <string name="badge_tier_gold">金</string>
+    <string name="badge_caption_fmt">%1$s %2$d 天</string>
+    <string name="badge_awarded_on_fmt">%1$s 授勳</string>
+    <string name="badge_progress_fmt">%1$d / %2$d</string>
+    <string name="badge_summary_fmt">已授 %1$d / %2$d 枚</string>
+    <string name="badge_summary_zero">已授 0 / 15 枚</string>
+    <string name="badge_empty_hint">還沒有任何徽章——先去開卷，明天再來看這面牆。</string>
+    <string name="badge_close">關閉</string>
+
+    <!-- 生詞本（VocabularyNoteManager） -->
+    <string name="vocab_title">生詞本</string>
+    <string name="vocab_add">存入生詞本</string>
+    <string name="vocab_added">已存入生詞本</string>
+    <string name="vocab_exists">這個詞已在生詞本——出處已更新</string>
+    <string name="vocab_quota">生詞本已達 2000 詞上限，請先匯出 CSV 清倉</string>
+    <string name="vocab_review_title">今日複習</string>
+    <string name="vocab_empty">還沒有收藏生詞——閱讀時快查後一鍵收藏</string>
+    <string name="vocab_remember">記得</string>
+    <string name="vocab_forgot">忘了</string>
+    <string name="vocab_mastered">已畢業</string>
+    <string name="vocab_export">匯出 CSV</string>
+    <string name="vocab_export_done">已匯出生詞 CSV</string>
+    <string name="vocab_queue_fmt">今日待複習：%1$d 詞</string>
+    <string name="vocab_counter_fmt">複習中 %1$d 詞・畢業 %2$d 詞</string>
+
+    <!-- 書籍分享卡（BookShareCardHelper） -->
+    <string name="share_book_card">分享本書</string>
+    <string name="share_copy">複製文字卡</string>
+    <string name="share_send">分享</string>
+    <string name="share_copied">已複製——到任何輸入框貼上即可</string>
+    <string name="share_copy_failed">複製失敗——請改用系統分享</string>
+    <string name="share_no_author">佚名</string>
+    <string name="share_read_duration_fmt">閱讀 %1$d 小時 %2$d 分</string>
+    <string name="share_subject_fmt">我在讀《%1$s》</string>
+
+    <!-- 閱讀時間軸（ReadingTimelineHelper） -->
+    <string name="timeline_title">閱讀時間軸</string>
+    <string name="timeline_today">我的今天</string>
+    <string name="timeline_week">近 7 日書目</string>
+    <string name="timeline_empty">時間軸空白——今天讀的每一本書都會記在這裡</string>
+    <string name="timeline_clear">清空時間軸</string>
+    <string name="timeline_cleared">時間軸已清空</string>
+    <string name="timeline_recap_fmt">《%1$s》%2$d 分——%3$s</string>
+    <string name="timeline_week_fmt">《%1$s》共 %2$d 分（%3$d 天）</string>
+    <string name="timeline_last_visit_fmt">上次讀到：%1$s（%2$d 天前）</string>
+
+    <!-- 閱讀挑戰（ReadingChallengeManager） -->
+    <string name="challenge_title">閱讀挑戰</string>
+    <string name="challenge_weekly">本週閱讀</string>
+    <string name="challenge_streak">連續開卷</string>
+    <string name="challenge_start">開始挑戰</string>
+    <string name="challenge_abandon">放棄本場</string>
+    <string name="challenge_empty">沒有進行中的挑戰——開一場，把習慣切成可慶祝的小關卡</string>
+    <string name="challenge_trophy">獎盃牆</string>
+    <string name="challenge_progress_fmt">%1$d / %2$d（%3$d%%）</string>
+    <string name="challenge_done_fmt">挑戰達成！%1$s %2$d ✓</string>
+    <string name="challenge_trophy_fmt">%1$s %2$s %3$d ✓</string>
 </resources>
